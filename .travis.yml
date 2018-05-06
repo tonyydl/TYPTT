@@ -3,8 +3,9 @@ android:
   components:
     - build-tools-27.0.3
     - android-27
-  before_install:
-    - chmod +x gradlew
+    - add-on
+    - extra
+    - sys-img-armeabi-v7a-android-27
   # Emulator Management: Create, Start and Wait
   before_script:
     - echo no | android create avd --force -n test -t android-27 --abi armeabi-v7a
