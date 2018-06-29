@@ -8,4 +8,29 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="BoardItem" />
+    <style name="BoardItem.Main">
+        <item name="android:background">@color/board_item_bg</item>
+        <item name="android:padding">@dimen/board_item_padding</item>
+    </style>
+    <style name="BoardItem.CategoryLayout">
+        <item name="android:padding">@dimen/board_item_category_layout_padding</item>
+    </style>
+    <style name="BoardItem.Text">
+        <item name="android:textColor">@color/board_item_text_color</item>
+    </style>
+    <style name="BoardItem.Text.Category">
+        <item name="android:textColor">@color/board_item_category_text_color</item>
+        <item name="android:textSize">@dimen/board_item_category_size</item>
+    </style>
+    <style name="BoardItem.Text.Name">
+        <item name="android:textSize">@dimen/board_item_name_size</item>
+    </style>
+    <style name="BoardItem.Text.Title">
+        <item name="android:textSize">@dimen/board_item_title_size</item>
+    </style>
+    <style name="BoardItem.Text.Popularity">
+        <item name="android:textColor">@color/board_item_popularity_text_color</item>
+        <item name="android:textSize">@dimen/board_item_title_size</item>
+    </style>
 </resources>
