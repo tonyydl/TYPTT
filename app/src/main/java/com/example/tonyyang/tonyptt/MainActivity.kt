@@ -11,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import fr.castorflex.android.smoothprogressbar.SmoothProgressBar
 
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
@@ -26,7 +27,11 @@ import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.board_item.view.*
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), LoadingEffectSupport {
+    companion object {
+        private val TAG = MainActivity::class.java.simpleName
+    }
+
     private lateinit var mLayoutManager: RecyclerView.LayoutManager
     private lateinit var mAdapter: CustomAdapter
     private val boardList = ArrayList<Board>()
@@ -72,6 +77,7 @@ class MainActivity : AppCompatActivity() {
                     override fun onSubscribe(d: Disposable) {
                         Log.d(TAG, "onSubscribe: $d")
                         DisposableManager.add(d)
+                        startLoadingbar()
                     }
 
                     override fun onNext(board: Board) {
@@ -86,6 +92,7 @@ class MainActivity : AppCompatActivity() {
                     override fun onComplete() {
                         Log.d(TAG, "onComplete")
                         mAdapter.updateList(boardList)
+                        stopLoadingbar()
                     }
                 })
     }
@@ -147,7 +154,17 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    companion object {
-        private val TAG = MainActivity::class.java.simpleName
+    override fun startLoadingbar() {
+        if (progressbar is SmoothProgressBar) {
+            (progressbar as SmoothProgressBar).progressiveStart()
+            progressbar.visibility = View.VISIBLE
+        }
+    }
+
+    override fun stopLoadingbar() {
+        if (progressbar is SmoothProgressBar) {
+            (progressbar as SmoothProgressBar).progressiveStop()
+            progressbar.visibility = View.GONE
+        }
     }
 }
