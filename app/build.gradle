@@ -1,10 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
-// https://youtrack.jetbrains.com/issue/KT-17641
-apply {
-    plugin 'kotlin-android-extensions'
-}
+apply plugin: 'kotlin-android-extensions'
 
 android {
     compileSdkVersion 27
@@ -35,6 +32,7 @@ dependencies {
     implementation 'io.reactivex.rxjava2:rxkotlin:2.2.0'
     implementation 'org.jsoup:jsoup:1.11.3'
     implementation "android.arch.persistence.room:runtime:1.1.1"
+    implementation 'com.github.castorflex.smoothprogressbar:library:1.1.0'
     kapt "android.arch.persistence.room:compiler:1.1.1"
     testImplementation "android.arch.persistence.room:testing:1.1.1"
     testImplementation 'junit:junit:4.12'
