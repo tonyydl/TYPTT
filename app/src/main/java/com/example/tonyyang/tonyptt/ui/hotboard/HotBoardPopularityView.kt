@@ -1,13 +1,14 @@
-package com.example.tonyyang.tonyptt
+package com.example.tonyyang.tonyptt.ui.hotboard
 
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.RelativeLayout
+import com.example.tonyyang.tonyptt.R
 import kotlinx.android.synthetic.main.popularity_view.view.*
 
-class PopularityView @JvmOverloads constructor(
+class HotBoardPopularityView @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null,
         defStyleAttr: Int = 0
@@ -21,9 +22,9 @@ class PopularityView @JvmOverloads constructor(
     init {
         LayoutInflater.from(context).inflate(R.layout.popularity_view, this, true)
         if (attrs != null) {
-            val a = context.obtainStyledAttributes(attrs, R.styleable.PopularityView)
-            if (a.hasValue(R.styleable.PopularityView_popularity_number)) {
-                val number = a.getInt(R.styleable.PopularityView_popularity_number, 0)
+            val a = context.obtainStyledAttributes(attrs, R.styleable.HotBoardPopularityView)
+            if (a.hasValue(R.styleable.HotBoardPopularityView_popularity_number)) {
+                val number = a.getInt(R.styleable.HotBoardPopularityView_popularity_number, 0)
                 show(number)
             }
             a.recycle()

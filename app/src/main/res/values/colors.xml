@@ -4,7 +4,7 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
 
-    <!-- Board item color-->
+    <!-- HotBoard item color-->
     <color name="board_item_bg">#222831</color>
     <color name="board_item_text_color">#00adb5</color>
     <color name="board_item_category_text_color">#eeeeee</color>
