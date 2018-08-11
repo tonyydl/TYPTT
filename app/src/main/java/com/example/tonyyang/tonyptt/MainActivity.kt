@@ -5,30 +5,25 @@ import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
-
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import fr.castorflex.android.smoothprogressbar.SmoothProgressBar
-
 import org.jsoup.Jsoup
-import org.jsoup.nodes.Element
-
 import java.util.ArrayList
-
 import io.reactivex.Observable
 import io.reactivex.ObservableOnSubscribe
-import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.board_item.view.*
+import org.jsoup.nodes.Document
+import java.io.IOException
 
 class MainActivity : AppCompatActivity(), LoadingEffectSupport {
     companion object {
+        @Suppress("unused")
         private val TAG = MainActivity::class.java.simpleName
     }
 
@@ -45,56 +40,33 @@ class MainActivity : AppCompatActivity(), LoadingEffectSupport {
     }
 
     private fun loadData() {
-        val boardObservable = Observable.create(ObservableOnSubscribe<Element> { emitter ->
-            val doc = Jsoup.connect("https://www.ptt.cc/bbs/hotboards.html").get()
-            Log.d(TAG, doc.title())
-            val container = doc.selectFirst("div .b-list-container").selectFirst(".action-bar-margin").selectFirst(".bbs-screen")
-            val elements = container.select(".b-ent").select(".board")
-            for (element in elements) {
-                emitter.onNext(element)
+        Observable.create((ObservableOnSubscribe<Document> { emitter ->
+            startLoadingbar()
+            try {
+                val doc = Jsoup.connect("https://www.ptt.cc/bbs/hotboards.html").get()
+                emitter.onNext(doc)
+                emitter.onComplete()
+            } catch (e: IOException) {
+                e.printStackTrace()
             }
-            emitter.onComplete()
-        })
-
-        boardList.clear()
-
-        boardObservable
-                .flatMap { element ->
-                    val list = ArrayList<Board>()
-                    val board = Board(
-                            element.selectFirst(".board-name").text(),
-                            element.selectFirst(".board-title").text(),
-                            element.selectFirst(".board-class").text(),
-                            Integer.valueOf(element.selectFirst(".board-nuser").child(0).text()),
-                            "https://www.ptt.cc/" + element.getElementsByAttribute("href")
-                    )
-                    list.add(board)
-                    Observable.fromIterable(list)
+        })).subscribeOn(Schedulers.io()).observeOn(Schedulers.computation()).doOnNext { it ->
+            val container = it.selectFirst("div .b-list-container").selectFirst(".action-bar-margin").selectFirst(".bbs-screen")
+            val elements = container.select(".b-ent").select(".board")
+            if (elements.size > 0) {
+                boardList.clear()
+                elements.forEach {
+                    boardList.add(Board(
+                            it.selectFirst(".board-name").text(),
+                            it.selectFirst(".board-title").text(),
+                            it.selectFirst(".board-class").text(),
+                            Integer.valueOf(it.selectFirst(".board-nuser").child(0).text()),
+                            "https://www.ptt.cc/" + it.getElementsByAttribute("href")))
                 }
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(object : Observer<Board> {
-                    override fun onSubscribe(d: Disposable) {
-                        Log.d(TAG, "onSubscribe: $d")
-                        DisposableManager.add(d)
-                        startLoadingbar()
-                    }
-
-                    override fun onNext(board: Board) {
-                        Log.d(TAG, "onNext: ${board.name}")
-                        boardList.add(board)
-                    }
-
-                    override fun onError(e: Throwable) {
-                        Log.d(TAG, "onError: ${e.message}")
-                    }
-
-                    override fun onComplete() {
-                        Log.d(TAG, "onComplete")
-                        mAdapter.updateList(boardList)
-                        stopLoadingbar()
-                    }
-                })
+            }
+        }.observeOn(AndroidSchedulers.mainThread()).subscribe {
+            mAdapter.updateList(boardList)
+            stopLoadingbar()
+        }
     }
 
     private fun configureToolbar() {
