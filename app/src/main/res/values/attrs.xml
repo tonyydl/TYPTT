@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="PopularityView">
+    <declare-styleable name="HotBoardPopularityView">
         <attr name="popularity_number" format="integer" />
     </declare-styleable>
 </resources>

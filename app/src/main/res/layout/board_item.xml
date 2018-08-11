@@ -57,7 +57,7 @@
 
     </LinearLayout>
 
-    <com.example.tonyyang.tonyptt.PopularityView
+    <com.example.tonyyang.tonyptt.ui.hotboard.HotBoardPopularityView
         android:id="@+id/popularity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

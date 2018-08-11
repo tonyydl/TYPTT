@@ -1,47 +1,77 @@
-package com.example.tonyyang.tonyptt
+package com.example.tonyyang.tonyptt.ui.hotboard
 
-import android.support.v7.app.AppCompatActivity
+import android.arch.lifecycle.LifecycleOwner
+import android.arch.lifecycle.LiveData
+import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
+import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.Toolbar
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import fr.castorflex.android.smoothprogressbar.SmoothProgressBar
-import org.jsoup.Jsoup
-import java.util.ArrayList
+import com.example.tonyyang.tonyptt.*
 import io.reactivex.Observable
 import io.reactivex.ObservableOnSubscribe
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.board_item.view.*
+import kotlinx.android.synthetic.main.hotboard_fragment.*
+import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import java.io.IOException
 
-class MainActivity : AppCompatActivity(), LoadingEffectSupport {
+class HotBoardFragment : Fragment() {
+
     companion object {
-        @Suppress("unused")
-        private val TAG = MainActivity::class.java.simpleName
+        fun newInstance() = HotBoardFragment()
     }
 
-    private lateinit var mLayoutManager: RecyclerView.LayoutManager
-    private lateinit var mAdapter: CustomAdapter
-    private val boardList = ArrayList<Board>()
+    private lateinit var viewModel: HotBoardViewModel
+
+    private var hotBoardActivity: HotBoardActivity? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        configureToolbar()
-        initListView()
+        try {
+            hotBoardActivity = activity as HotBoardActivity
+        } catch (e: ClassCastException) {
+            /** The activity doesn't implement the listener **/
+        }
+    }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+                              savedInstanceState: Bundle?): View {
+        return inflater.inflate(R.layout.hotboard_fragment, container, false)
+    }
+
+    private val customAdapter: HotBoardFragment.CustomAdapter by lazy { CustomAdapter() }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        recyclerView.apply {
+            setHasFixedSize(true)
+            layoutManager = LinearLayoutManager(activity)
+            adapter = customAdapter
+        }
+        viewModel = ViewModelProviders.of(this).get(HotBoardViewModel::class.java)
+        viewModel.getHotBoardListLiveData().nonNullObserve(this) {
+            customAdapter.updateList(it)
+        }
         loadData()
     }
 
+    private fun <T> LiveData<T>.nonNullObserve(owner: LifecycleOwner, observer: (t: T) -> Unit) {
+        this.observe(owner, android.arch.lifecycle.Observer {
+            it?.let(observer)
+        })
+    }
+
     private fun loadData() {
+        val boardList = ArrayList<HotBoard>()
         Observable.create((ObservableOnSubscribe<Document> { emitter ->
-            startLoadingbar()
+            hotBoardActivity?.startLoadingBar()
             try {
                 val doc = Jsoup.connect("https://www.ptt.cc/bbs/hotboards.html").get()
                 emitter.onNext(doc)
@@ -55,7 +85,7 @@ class MainActivity : AppCompatActivity(), LoadingEffectSupport {
             if (elements.size > 0) {
                 boardList.clear()
                 elements.forEach {
-                    boardList.add(Board(
+                    boardList.add(HotBoard(
                             it.selectFirst(".board-name").text(),
                             it.selectFirst(".board-title").text(),
                             it.selectFirst(".board-class").text(),
@@ -64,42 +94,19 @@ class MainActivity : AppCompatActivity(), LoadingEffectSupport {
                 }
             }
         }.observeOn(AndroidSchedulers.mainThread()).subscribe {
-            mAdapter.updateList(boardList)
-            stopLoadingbar()
+            viewModel.updateHotBoardList(boardList)
+            hotBoardActivity?.stopLoadingBar()
         }
-    }
-
-    private fun configureToolbar() {
-        val mToolbar = findViewById<Toolbar>(R.id.toolbar)
-        setSupportActionBar(mToolbar)
-    }
-
-    private fun initListView() {
-        mLayoutManager = LinearLayoutManager(this)
-        mAdapter = CustomAdapter()
-        recyclerView.apply {
-            setHasFixedSize(true)
-            layoutManager = mLayoutManager
-            adapter = mAdapter
-        }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        DisposableManager.clear()
     }
 
     private inner class CustomAdapter : RecyclerView.Adapter<CustomAdapter.ViewHolder>() {
 
-        private var boardList: List<Board> = ArrayList()
+        private val boardList = ArrayList<HotBoard>()
 
-        fun updateList(boardList: List<Board>) {
-            setBoardList(boardList)
+        fun updateList(hotBoardList: List<HotBoard>) {
+            this.boardList.clear()
+            this.boardList.addAll(hotBoardList)
             notifyDataSetChanged()
-        }
-
-        private fun setBoardList(boardList: List<Board>) {
-            this.boardList = boardList
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -111,7 +118,7 @@ class MainActivity : AppCompatActivity(), LoadingEffectSupport {
             holder.name.text = boardList[position].name
             holder.title.text = boardList[position].title
             holder.category.text = boardList[position].category
-            holder.popularity.show(boardList[position].popularity)
+            holder.hotBoardPopularity.show(boardList[position].popularity)
         }
 
         override fun getItemCount(): Int {
@@ -122,21 +129,8 @@ class MainActivity : AppCompatActivity(), LoadingEffectSupport {
             val name: TextView = itemView.name
             val title: TextView = itemView.title
             val category: TextView = itemView.category
-            val popularity: PopularityView = itemView.popularity
+            val hotBoardPopularity: HotBoardPopularityView = itemView.popularity
         }
     }
 
-    override fun startLoadingbar() {
-        if (progressbar is SmoothProgressBar) {
-            (progressbar as SmoothProgressBar).progressiveStart()
-            progressbar.visibility = View.VISIBLE
-        }
-    }
-
-    override fun stopLoadingbar() {
-        if (progressbar is SmoothProgressBar) {
-            (progressbar as SmoothProgressBar).progressiveStop()
-            progressbar.visibility = View.GONE
-        }
-    }
 }
