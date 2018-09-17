@@ -1,7 +1,5 @@
 package com.example.tonyyang.tonyptt.ui.hotboard
 
-import android.arch.lifecycle.LifecycleOwner
-import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -22,6 +20,7 @@ import kotlinx.android.synthetic.main.hotboard_fragment.*
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import java.io.IOException
+import java.lang.ClassCastException
 
 class HotBoardFragment : Fragment() {
 
@@ -64,12 +63,6 @@ class HotBoardFragment : Fragment() {
             customAdapter.updateList(it)
         }
         loadData()
-    }
-
-    private fun <T> LiveData<T>.nonNullObserve(owner: LifecycleOwner, observer: (t: T) -> Unit) {
-        this.observe(owner, android.arch.lifecycle.Observer {
-            it?.let(observer)
-        })
     }
 
     private fun loadData() {
