@@ -1,4 +1,4 @@
-package com.example.tonyyang.tonyptt.ui.hotboard
+package com.example.tonyyang.tonyptt
 
 import android.arch.lifecycle.LifecycleOwner
 import android.arch.lifecycle.LiveData
