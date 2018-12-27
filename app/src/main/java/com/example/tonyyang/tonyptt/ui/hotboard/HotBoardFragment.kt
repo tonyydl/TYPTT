@@ -10,7 +10,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.example.tonyyang.tonyptt.*
-import com.orhanobut.logger.Logger
 import io.reactivex.Observable
 import io.reactivex.ObservableOnSubscribe
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -34,7 +33,6 @@ class HotBoardFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Logger.i("onCreate")
         try {
             hotBoardActivity = activity as HotBoardActivity
         } catch (e: ClassCastException) {
@@ -44,7 +42,6 @@ class HotBoardFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
-        Logger.i("onCreateView")
         return inflater.inflate(R.layout.hotboard_fragment, container, false)
     }
 
@@ -52,7 +49,6 @@ class HotBoardFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        Logger.i("onActivityCreated")
         recyclerView.apply {
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(activity)
@@ -128,10 +124,5 @@ class HotBoardFragment : Fragment() {
             val category: TextView = itemView.category
             val hotBoardPopularity: HotBoardPopularityView = itemView.popularity
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        Logger.i("onResume")
     }
 }
