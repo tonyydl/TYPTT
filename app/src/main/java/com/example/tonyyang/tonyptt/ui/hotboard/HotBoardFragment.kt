@@ -72,7 +72,7 @@ class HotBoardFragment : Fragment() {
             } catch (e: IOException) {
                 e.printStackTrace()
             }
-        })).subscribeOn(Schedulers.io()).observeOn(Schedulers.computation()).doOnNext { it ->
+        })).subscribeOn(Schedulers.io()).observeOn(Schedulers.computation()).doOnNext {
             val container = it.selectFirst("div .b-list-container").selectFirst(".action-bar-margin").selectFirst(".bbs-screen")
             val elements = container.select(".b-ent").select(".board")
             if (elements.size > 0) {
