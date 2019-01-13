@@ -1,4 +1,4 @@
-package com.example.tonyyang.tonyptt.ui.hotboard
+package com.tonyyang.typtt.ui.hotboard
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel

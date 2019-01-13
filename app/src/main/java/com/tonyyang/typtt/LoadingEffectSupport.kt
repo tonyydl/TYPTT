@@ -1,4 +1,4 @@
-package com.example.tonyyang.tonyptt
+package com.tonyyang.typtt
 
 interface LoadingEffectSupport {
     fun startLoadingBar()

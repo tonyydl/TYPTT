@@ -1,4 +1,4 @@
-package com.example.tonyyang.tonyptt
+package com.tonyyang.typtt
 
 interface ToolbarSupport {
     fun updateTitle(title: String, subTitle: String = "")
