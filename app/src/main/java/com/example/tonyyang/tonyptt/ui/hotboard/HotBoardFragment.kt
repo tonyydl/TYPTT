@@ -20,12 +20,17 @@ import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import java.io.IOException
 import java.lang.ClassCastException
+import io.reactivex.disposables.CompositeDisposable
+
+
 
 class HotBoardFragment : Fragment() {
 
     companion object {
         fun newInstance() = HotBoardFragment()
     }
+
+    private val compositeDisposable = CompositeDisposable()
 
     private lateinit var viewModel: HotBoardViewModel
 
@@ -61,6 +66,11 @@ class HotBoardFragment : Fragment() {
         loadData()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        compositeDisposable.dispose()
+    }
+
     private fun loadData() {
         val boardList = ArrayList<HotBoard>()
         Observable.create((ObservableOnSubscribe<Document> { emitter ->
@@ -77,19 +87,19 @@ class HotBoardFragment : Fragment() {
             val elements = container.select(".b-ent").select(".board")
             if (elements.size > 0) {
                 boardList.clear()
-                elements.forEach {
+                elements.forEach { element ->
                     boardList.add(HotBoard(
-                            it.selectFirst(".board-name").text(),
-                            it.selectFirst(".board-title").text(),
-                            it.selectFirst(".board-class").text(),
-                            Integer.valueOf(it.selectFirst(".board-nuser").child(0).text()),
-                            "https://www.ptt.cc/" + it.getElementsByAttribute("href")))
+                            element.selectFirst(".board-name").text(),
+                            element.selectFirst(".board-title").text(),
+                            element.selectFirst(".board-class").text(),
+                            Integer.valueOf(element.selectFirst(".board-nuser").child(0).text()),
+                            "https://www.ptt.cc/" + element.getElementsByAttribute("href")))
                 }
             }
         }.observeOn(AndroidSchedulers.mainThread()).subscribe {
             viewModel.updateHotBoardList(boardList)
             hotBoardActivity?.stopLoadingBar()
-        }
+        }.addTo(compositeDisposable)
     }
 
     private inner class CustomAdapter : RecyclerView.Adapter<CustomAdapter.ViewHolder>() {
