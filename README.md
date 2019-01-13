@@ -1,3 +1,3 @@
-# TonyPtt
+# TYPTT
 
-[![Build Status](https://travis-ci.org/tonyyang924/TonyPtt.svg?branch=develop)](https://travis-ci.org/tonyyang924/TonyPtt)
+[![Build Status](https://travis-ci.org/tonyyang924/TYPTT.svg?branch=master)](https://travis-ci.org/tonyyang924/TYPTT)
