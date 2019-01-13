@@ -1,12 +1,12 @@
-package com.example.tonyyang.tonyptt.ui.hotboard
+package com.tonyyang.typtt.ui.hotboard
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.Toolbar
 import android.view.View
-import com.example.tonyyang.tonyptt.LoadingEffectSupport
-import com.example.tonyyang.tonyptt.R
-import com.example.tonyyang.tonyptt.ToolbarSupport
+import com.tonyyang.typtt.LoadingEffectSupport
+import com.tonyyang.typtt.R
+import com.tonyyang.typtt.ToolbarSupport
 import fr.castorflex.android.smoothprogressbar.SmoothProgressBar
 import kotlinx.android.synthetic.main.hotboard_activity.*
 

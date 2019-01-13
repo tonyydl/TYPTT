@@ -1,11 +1,11 @@
-package com.example.tonyyang.tonyptt.ui.hotboard
+package com.tonyyang.typtt.ui.hotboard
 
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.RelativeLayout
-import com.example.tonyyang.tonyptt.R
+import com.tonyyang.typtt.R
 import kotlinx.android.synthetic.main.popularity_view.view.*
 
 class HotBoardPopularityView @JvmOverloads constructor(

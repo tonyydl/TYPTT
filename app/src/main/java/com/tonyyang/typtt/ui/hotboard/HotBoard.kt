@@ -1,4 +1,4 @@
-package com.example.tonyyang.tonyptt.ui.hotboard
+package com.tonyyang.typtt.ui.hotboard
 
 data class HotBoard(val name: String,
                     val title: String,

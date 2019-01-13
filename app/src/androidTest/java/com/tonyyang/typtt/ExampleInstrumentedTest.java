@@ -1,4 +1,4 @@
-package com.example.tonyyang.tonyptt;
+package com.tonyyang.typtt;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.example.tonyyang.tonyptt", appContext.getPackageName());
+        assertEquals("com.tonyyang.typtt", appContext.getPackageName());
     }
 }
