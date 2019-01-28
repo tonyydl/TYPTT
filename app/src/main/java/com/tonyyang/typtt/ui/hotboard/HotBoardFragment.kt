@@ -30,9 +30,15 @@ class HotBoardFragment : Fragment() {
         fun newInstance() = HotBoardFragment()
     }
 
-    private val compositeDisposable = CompositeDisposable()
+    private val viewModel by lazy {
+        ViewModelProviders.of(this).get(HotBoardViewModel::class.java)
+    }
 
-    private lateinit var viewModel: HotBoardViewModel
+    private val customAdapter by lazy {
+        CustomAdapter()
+    }
+
+    private val compositeDisposable = CompositeDisposable()
 
     private var hotBoardActivity: HotBoardActivity? = null
 
@@ -50,8 +56,6 @@ class HotBoardFragment : Fragment() {
         return inflater.inflate(R.layout.hotboard_fragment, container, false)
     }
 
-    private val customAdapter: HotBoardFragment.CustomAdapter by lazy { CustomAdapter() }
-
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         recyclerView.apply {
@@ -59,7 +63,6 @@ class HotBoardFragment : Fragment() {
             layoutManager = LinearLayoutManager(activity)
             adapter = customAdapter
         }
-        viewModel = ViewModelProviders.of(this).get(HotBoardViewModel::class.java)
         viewModel.getHotBoardListLiveData().nonNullObserve(this) {
             customAdapter.updateList(it)
         }
