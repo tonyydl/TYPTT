@@ -1,10 +1,10 @@
 package com.tonyyang.typtt.ui.hotboard
 
-import android.arch.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,15 +24,21 @@ import io.reactivex.disposables.CompositeDisposable
 
 
 
-class HotBoardFragment : Fragment() {
+class HotBoardFragment : androidx.fragment.app.Fragment() {
 
     companion object {
         fun newInstance() = HotBoardFragment()
     }
 
-    private val compositeDisposable = CompositeDisposable()
+    private val viewModel by lazy {
+        ViewModelProviders.of(this).get(HotBoardViewModel::class.java)
+    }
 
-    private lateinit var viewModel: HotBoardViewModel
+    private val customAdapter by lazy {
+        CustomAdapter()
+    }
+
+    private val compositeDisposable = CompositeDisposable()
 
     private var hotBoardActivity: HotBoardActivity? = null
 
@@ -50,16 +56,13 @@ class HotBoardFragment : Fragment() {
         return inflater.inflate(R.layout.hotboard_fragment, container, false)
     }
 
-    private val customAdapter: HotBoardFragment.CustomAdapter by lazy { CustomAdapter() }
-
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         recyclerView.apply {
             setHasFixedSize(true)
-            layoutManager = LinearLayoutManager(activity)
+            layoutManager = androidx.recyclerview.widget.LinearLayoutManager(activity)
             adapter = customAdapter
         }
-        viewModel = ViewModelProviders.of(this).get(HotBoardViewModel::class.java)
         viewModel.getHotBoardListLiveData().nonNullObserve(this) {
             customAdapter.updateList(it)
         }
@@ -102,7 +105,7 @@ class HotBoardFragment : Fragment() {
         }.addTo(compositeDisposable)
     }
 
-    private inner class CustomAdapter : RecyclerView.Adapter<CustomAdapter.ViewHolder>() {
+    private inner class CustomAdapter : androidx.recyclerview.widget.RecyclerView.Adapter<CustomAdapter.ViewHolder>() {
 
         private val boardList = ArrayList<HotBoard>()
 
@@ -128,7 +131,7 @@ class HotBoardFragment : Fragment() {
             return boardList.size
         }
 
-        inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        inner class ViewHolder(itemView: View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {
             val name: TextView = itemView.name
             val title: TextView = itemView.title
             val category: TextView = itemView.category
