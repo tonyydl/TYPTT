@@ -1,9 +1,9 @@
 package com.tonyyang.typtt.ui.hotboard
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.appcompat.widget.Toolbar
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import com.tonyyang.typtt.LoadingEffectSupport
 import com.tonyyang.typtt.R
 import com.tonyyang.typtt.ToolbarSupport
@@ -30,7 +30,7 @@ class HotBoardActivity : AppCompatActivity(), ToolbarSupport, LoadingEffectSuppo
         supportActionBar?.subtitle = subTitle
     }
 
-    private val toolbar: Toolbar by lazy { findViewById<Toolbar>(R.id.toolbar) }
+    private val toolbar by lazy { findViewById<Toolbar>(R.id.toolbar) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -55,5 +55,4 @@ class HotBoardPopularityView @JvmOverloads constructor(
     private fun hidden() {
         visibility = View.GONE
     }
-
 }
