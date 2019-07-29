@@ -1,30 +1,29 @@
 package com.tonyyang.typtt.ui.hotboard
 
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import com.tonyyang.typtt.*
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.RecyclerView
+import com.tonyyang.typtt.R
+import com.tonyyang.typtt.addTo
+import com.tonyyang.typtt.nonNullObserve
 import io.reactivex.Observable
 import io.reactivex.ObservableOnSubscribe
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.board_item.view.*
 import kotlinx.android.synthetic.main.hotboard_fragment.*
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import java.io.IOException
-import java.lang.ClassCastException
-import io.reactivex.disposables.CompositeDisposable
 
 
-
-class HotBoardFragment : androidx.fragment.app.Fragment() {
+class HotBoardFragment : Fragment() {
 
     companion object {
         fun newInstance() = HotBoardFragment()
@@ -105,7 +104,7 @@ class HotBoardFragment : androidx.fragment.app.Fragment() {
         }.addTo(compositeDisposable)
     }
 
-    private inner class CustomAdapter : androidx.recyclerview.widget.RecyclerView.Adapter<CustomAdapter.ViewHolder>() {
+    private inner class CustomAdapter : RecyclerView.Adapter<CustomAdapter.ViewHolder>() {
 
         private val boardList = ArrayList<HotBoard>()
 
@@ -131,7 +130,7 @@ class HotBoardFragment : androidx.fragment.app.Fragment() {
             return boardList.size
         }
 
-        inner class ViewHolder(itemView: View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {
+        inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             val name: TextView = itemView.name
             val title: TextView = itemView.title
             val category: TextView = itemView.category
