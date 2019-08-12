@@ -5,6 +5,8 @@ apply plugin: 'kotlin-android-extensions'
 
 android {
     compileSdkVersion 28
+    buildToolsVersion '28.0.3'
+
     defaultConfig {
         applicationId "com.tonyyang.typtt"
         minSdkVersion 19
