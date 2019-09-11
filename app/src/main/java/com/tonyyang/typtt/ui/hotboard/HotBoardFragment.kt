@@ -4,10 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
-import androidx.recyclerview.widget.RecyclerView
 import com.tonyyang.typtt.R
 import com.tonyyang.typtt.addTo
 import com.tonyyang.typtt.nonNullObserve
@@ -16,7 +14,6 @@ import io.reactivex.ObservableOnSubscribe
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
-import kotlinx.android.synthetic.main.board_item.view.*
 import kotlinx.android.synthetic.main.hotboard_fragment.*
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
@@ -33,8 +30,8 @@ class HotBoardFragment : Fragment() {
         ViewModelProviders.of(this).get(HotBoardViewModel::class.java)
     }
 
-    private val customAdapter by lazy {
-        CustomAdapter()
+    private val hotBoardAdapter by lazy {
+        HotBoardAdapter()
     }
 
     private val compositeDisposable = CompositeDisposable()
@@ -60,10 +57,10 @@ class HotBoardFragment : Fragment() {
         recyclerView.apply {
             setHasFixedSize(true)
             layoutManager = androidx.recyclerview.widget.LinearLayoutManager(activity)
-            adapter = customAdapter
+            adapter = hotBoardAdapter
         }
         viewModel.getHotBoardListLiveData().nonNullObserve(this) {
-            customAdapter.updateList(it)
+            hotBoardAdapter.updateList(it)
         }
         loadData()
     }
@@ -74,8 +71,7 @@ class HotBoardFragment : Fragment() {
     }
 
     private fun loadData() {
-        val boardList = ArrayList<HotBoard>()
-        Observable.create((ObservableOnSubscribe<Document> { emitter ->
+        Observable.create(ObservableOnSubscribe<Document> { emitter ->
             hotBoardActivity?.startLoadingBar()
             try {
                 val doc = Jsoup.connect("https://www.ptt.cc/bbs/hotboards.html").get()
@@ -84,57 +80,26 @@ class HotBoardFragment : Fragment() {
             } catch (e: IOException) {
                 e.printStackTrace()
             }
-        })).subscribeOn(Schedulers.io()).observeOn(Schedulers.computation()).doOnNext {
-            val container = it.selectFirst("div .b-list-container").selectFirst(".action-bar-margin").selectFirst(".bbs-screen")
+        }).subscribeOn(Schedulers.io()).map { t ->
+            val container = t.selectFirst("div .b-list-container")
+                    .selectFirst(".action-bar-margin")
+                    .selectFirst(".bbs-screen")
             val elements = container.select(".b-ent").select(".board")
-            if (elements.size > 0) {
-                boardList.clear()
-                elements.forEach { element ->
-                    boardList.add(HotBoard(
-                            element.selectFirst(".board-name").text(),
-                            element.selectFirst(".board-title").text(),
-                            element.selectFirst(".board-class").text(),
-                            Integer.valueOf(element.selectFirst(".board-nuser").child(0).text()),
-                            "https://www.ptt.cc/" + element.getElementsByAttribute("href")))
+            mutableListOf<HotBoard>().also {
+                if (elements.size > 0) {
+                    elements.forEach { element ->
+                        it.add(HotBoard(
+                                element.selectFirst(".board-name").text(),
+                                element.selectFirst(".board-title").text(),
+                                element.selectFirst(".board-class").text(),
+                                Integer.valueOf(element.selectFirst(".board-nuser").child(0).text()),
+                                "https://www.ptt.cc/" + element.getElementsByAttribute("href")))
+                    }
                 }
             }
         }.observeOn(AndroidSchedulers.mainThread()).subscribe {
-            viewModel.updateHotBoardList(boardList)
+            viewModel.updateHotBoardList(it)
             hotBoardActivity?.stopLoadingBar()
         }.addTo(compositeDisposable)
-    }
-
-    private inner class CustomAdapter : RecyclerView.Adapter<CustomAdapter.ViewHolder>() {
-
-        private val boardList = ArrayList<HotBoard>()
-
-        fun updateList(hotBoardList: List<HotBoard>) {
-            this.boardList.clear()
-            this.boardList.addAll(hotBoardList)
-            notifyDataSetChanged()
-        }
-
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-            val itemView = LayoutInflater.from(parent.context).inflate(R.layout.board_item, parent, false)
-            return ViewHolder(itemView)
-        }
-
-        override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-            holder.name.text = boardList[position].name
-            holder.title.text = boardList[position].title
-            holder.category.text = boardList[position].category
-            holder.hotBoardPopularity.show(boardList[position].popularity)
-        }
-
-        override fun getItemCount(): Int {
-            return boardList.size
-        }
-
-        inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-            val name: TextView = itemView.name
-            val title: TextView = itemView.title
-            val category: TextView = itemView.category
-            val hotBoardPopularity: HotBoardPopularityView = itemView.popularity
-        }
     }
 }
