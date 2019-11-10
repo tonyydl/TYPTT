@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.RelativeLayout
 import com.tonyyang.typtt.R
-import kotlinx.android.synthetic.main.popularity_view.view.*
+import kotlinx.android.synthetic.main.view_popularity.view.*
 
 class HotBoardPopularityView @JvmOverloads constructor(
         context: Context,
@@ -20,7 +20,7 @@ class HotBoardPopularityView @JvmOverloads constructor(
     }
 
     init {
-        LayoutInflater.from(context).inflate(R.layout.popularity_view, this, true)
+        LayoutInflater.from(context).inflate(R.layout.view_popularity, this, true)
         if (attrs != null) {
             val a = context.obtainStyledAttributes(attrs, R.styleable.HotBoardPopularityView)
             if (a.hasValue(R.styleable.HotBoardPopularityView_popularity_number)) {

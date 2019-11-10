@@ -5,7 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.tonyyang.typtt.R
-import kotlinx.android.synthetic.main.board_item.view.*
+import kotlinx.android.synthetic.main.item_board.view.*
 
 class HotBoardAdapter : RecyclerView.Adapter<HotBoardAdapter.HotBoardHolder>() {
 
@@ -18,7 +18,7 @@ class HotBoardAdapter : RecyclerView.Adapter<HotBoardAdapter.HotBoardHolder>() {
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HotBoardHolder {
-        return HotBoardHolder(LayoutInflater.from(parent.context).inflate(R.layout.board_item, parent, false))
+        return HotBoardHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_board, parent, false))
     }
 
     override fun onBindViewHolder(holder: HotBoardHolder, position: Int) {
