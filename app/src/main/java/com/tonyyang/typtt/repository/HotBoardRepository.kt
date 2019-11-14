@@ -30,7 +30,7 @@ object HotBoardRepository {
                             element.selectFirst(".board-title").text(),
                             element.selectFirst(".board-class").text(),
                             Integer.valueOf(element.selectFirst(".board-nuser").child(0).text()),
-                            "https://www.ptt.cc/" + element.getElementsByAttribute("href")))
+                            "https://www.ptt.cc/" + element.attr("href")))
                 }
             }
         }
