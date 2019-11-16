@@ -7,13 +7,19 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
-
+    <style name="MainPage">
+        <item name="android:background">@color/main_page_bg</item>
+    </style>
     <style name="BoardItem" />
     <style name="BoardItem.Main">
         <item name="android:background">@color/board_item_bg</item>
     </style>
     <style name="BoardItem.Text">
         <item name="android:textColor">@color/board_item_text_color</item>
+    </style>
+    <style name="BoardItem.Text.Like">
+        <item name="android:textColor">@color/board_item_like_text_color</item>
+        <item name="android:textSize">@dimen/board_item_like_size</item>
     </style>
     <style name="BoardItem.Text.Category">
         <item name="android:textColor">@color/board_item_category_text_color</item>
@@ -25,6 +31,18 @@
     </style>
     <style name="BoardItem.Text.Title">
         <item name="android:textSize">@dimen/board_item_title_size</item>
+    </style>
+    <style name="BoardItem.Text.Pinned">
+        <item name="android:textSize">@dimen/board_item_pinned_size</item>
+    </style>
+    <style name="BoardItem.Text.Author">
+        <item name="android:textSize">@dimen/board_item_author_size</item>
+    </style>
+    <style name="BoardItem.Text.Mark">
+        <item name="android:textSize">@dimen/board_item_date_size</item>
+    </style>
+    <style name="BoardItem.Text.Date">
+        <item name="android:textSize">@dimen/board_item_date_size</item>
     </style>
     <style name="BoardItem.Text.Popularity">
         <item name="android:textColor">@color/board_item_popularity_text_color</item>

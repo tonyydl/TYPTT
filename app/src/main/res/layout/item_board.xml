@@ -7,60 +7,90 @@
     android:layout_height="wrap_content">
 
     <TextView
-        android:id="@+id/category"
-        style="@style/BoardItem.Text.Category"
+        android:id="@+id/like"
+        style="@style/BoardItem.Text.Like"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
         android:layout_marginBottom="8dp"
-        android:ems="1"
-        android:gravity="center"
+        android:maxLength="5"
+        android:maxLines="1"
+        android:minEms="1"
+        android:singleLine="true"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/name"
+        app:layout_constraintEnd_toStartOf="@+id/title"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="籃球" />
-
-    <TextView
-        android:id="@+id/name"
-        style="@style/BoardItem.Text.Name"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:layout_marginEnd="16dp"
-        app:layout_constraintBottom_toTopOf="@+id/title"
-        app:layout_constraintEnd_toStartOf="@+id/popularity"
-        app:layout_constraintStart_toEndOf="@+id/category"
-        app:layout_constraintTop_toTopOf="@+id/category"
-        tools:text="NBA" />
+        tools:text="1" />
 
     <TextView
         android:id="@+id/title"
         style="@style/BoardItem.Text.Title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:ellipsize="end"
+        android:maxLines="2"
+        app:layout_constraintBottom_toTopOf="@+id/author"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/like"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="[問卦] 請問TYPTT各位覺得使用體驗如何呢？如果要打分數會打幾分呢？" />
+
+    <TextView
+        android:id="@+id/pinned"
+        style="@style/BoardItem.Text.Pinned"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="4dp"
+        android:text="★"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/author"
+        app:layout_constraintStart_toStartOf="@+id/title"
+        app:layout_constraintTop_toBottomOf="@+id/title"
+        tools:ignore="HardcodedText"
+        tools:visibility="visible" />
+
+    <TextView
+        android:id="@+id/author"
+        style="@style/BoardItem.Text.Author"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         android:ellipsize="end"
         android:maxLines="1"
         android:singleLine="true"
-        app:layout_constraintBottom_toBottomOf="@+id/category"
-        app:layout_constraintEnd_toEndOf="@+id/name"
-        app:layout_constraintStart_toStartOf="@+id/name"
-        app:layout_constraintTop_toBottomOf="@+id/name"
-        tools:text="◎[NBA] 2017-18總冠軍 金州勇士隊" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/mark"
+        app:layout_constraintStart_toEndOf="@+id/pinned"
+        app:layout_constraintTop_toBottomOf="@+id/title"
+        tools:text="tonyyang" />
 
-    <com.tonyyang.typtt.ui.hotboard.HotBoardPopularityView
-        android:id="@+id/popularity"
+    <TextView
+        android:id="@+id/mark"
+        style="@style/BoardItem.Text.Mark"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="4dp"
+        app:layout_constraintBottom_toBottomOf="@+id/date"
+        app:layout_constraintEnd_toStartOf="@+id/date"
+        tools:text="M" />
+
+    <TextView
+        android:id="@+id/date"
+        style="@style/BoardItem.Text.Date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="ContentDescription"
-        tools:popularity_number="99"
-        tools:src="@drawable/ic_popular" />
+        tools:text="11/16" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

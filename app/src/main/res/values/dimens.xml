@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="navigation_drawer_width">300dp</dimen>
+    <dimen name="board_item_like_size">18sp</dimen>
     <dimen name="board_item_category_size">21.5sp</dimen>
     <dimen name="board_item_name_size">20sp</dimen>
     <dimen name="board_item_title_size">16sp</dimen>
+    <dimen name="board_item_pinned_size">16sp</dimen>
+    <dimen name="board_item_author_size">14sp</dimen>
+    <dimen name="board_item_mark_size">16sp</dimen>
+    <dimen name="board_item_date_size">16sp</dimen>
     <dimen name="board_item_popularity_size">13.5sp</dimen>
 </resources>
