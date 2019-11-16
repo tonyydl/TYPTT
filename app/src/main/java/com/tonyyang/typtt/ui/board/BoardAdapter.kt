@@ -1,5 +1,9 @@
 package com.tonyyang.typtt.ui.board
 
+import android.graphics.Color
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -41,7 +45,27 @@ class BoardAdapter : RecyclerView.Adapter<BoardAdapter.BoardHolder>() {
 
     inner class BoardHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(articles: Articles) {
-            itemView.like.text = articles.like
+            SpannableString(articles.like).apply {
+                val likeCount = articles.like.toIntOrNull() ?: 0
+                val color = when {
+                    likeCount in 1..9 -> {
+                        ForegroundColorSpan(Color.GREEN)
+                    }
+                    likeCount >= 10 -> {
+                        ForegroundColorSpan(Color.YELLOW)
+                    }
+                    articles.like == "爆" -> {
+                        ForegroundColorSpan(Color.RED)
+                    }
+                    else -> {
+                        ForegroundColorSpan(Color.GRAY)
+                    }
+                }
+                setSpan(color, 0, articles.like.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+            }.let {
+                itemView.like.text = it
+            }
+
             itemView.title.text = articles.title
             itemView.author.text = articles.author
             itemView.pinned.visibility = if (articles.type == Type.PINNED_ARTICLES) View.VISIBLE else View.INVISIBLE

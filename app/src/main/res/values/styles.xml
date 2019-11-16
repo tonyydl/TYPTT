@@ -17,10 +17,6 @@
     <style name="BoardItem.Text">
         <item name="android:textColor">@color/board_item_text_color</item>
     </style>
-    <style name="BoardItem.Text.Like">
-        <item name="android:textColor">@color/board_item_like_text_color</item>
-        <item name="android:textSize">@dimen/board_item_like_size</item>
-    </style>
     <style name="BoardItem.Text.Category">
         <item name="android:textColor">@color/board_item_category_text_color</item>
         <item name="android:textSize">@dimen/board_item_category_size</item>
