@@ -1,21 +1,26 @@
 package com.tonyyang.typtt.viewmodel
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations.map
+import androidx.lifecycle.Transformations.switchMap
 import androidx.lifecycle.ViewModel
-import com.tonyyang.typtt.addTo
+import androidx.paging.PagedList
 import com.tonyyang.typtt.model.Articles
 import com.tonyyang.typtt.repository.BoardRepository
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
 
 class BoardViewModel : ViewModel() {
 
-    private val compositeDisposable by lazy {
-        CompositeDisposable()
+    private val articleLiveData by lazy {
+        MutableLiveData<String>()
     }
 
-    val articleListLiveData by lazy {
-        MutableLiveData<List<Articles>>()
+    private val repoResult = map(articleLiveData) {
+        BoardRepository.postOfArticles(it)
+    }
+
+    val articleListLiveData: LiveData<PagedList<Articles>> = switchMap(repoResult) {
+        it.pagedList
     }
 
     val isRefreshLiveData by lazy {
@@ -23,13 +28,6 @@ class BoardViewModel : ViewModel() {
     }
 
     fun loadData(boardUrl: String) {
-        isRefreshLiveData.postValue(true)
-        BoardRepository.getArticles(boardUrl)
-                .subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.io())
-                .subscribe {
-                    articleListLiveData.postValue(it)
-                    isRefreshLiveData.postValue(false)
-                }.addTo(compositeDisposable)
+        articleLiveData.value = boardUrl
     }
 }

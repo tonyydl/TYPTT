@@ -47,7 +47,7 @@ class BoardFragment : Fragment() {
             adapter = boardAdapter
         }
         viewModel.articleListLiveData.observe(this, Observer {
-            boardAdapter.updateList(it)
+            boardAdapter.submitList(it)
         })
         viewModel.isRefreshLiveData.observe(this, Observer {
             swipe_refresh.isRefreshing = it
