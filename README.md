@@ -2,16 +2,17 @@
 
 [![Build Status](https://travis-ci.org/tonyyang924/TYPTT.svg?branch=master)](https://travis-ci.org/tonyyang924/TYPTT)
 
-PTT is a household names telnet BBS in Taiwan. I hope I can create a easily usage app for PTT. 
+PTT is a well-known BBS station in Taiwan. I’d like to create a simplify app for PTT.
 
 * Developed the app with Kotlin. 
-* Use Android architecture components LiveData, ViewModel and Room. 
+* Use Android architecture components LiveData, ViewModel and Navigation. 
 * Use RxJava and RxAndroid for composing asynchronous. 
 * Use jsoup for extracting and manipulating HTML data
 
 ## Screenshots
 
-<img src="screenshots/main.png" height="650" />
+<img src="screenshots/hotboard.png" height="650" />
+<img src="screenshots/board.png" height="650" />
 
 ## Functionlity
 

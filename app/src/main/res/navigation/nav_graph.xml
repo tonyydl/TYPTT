@@ -8,6 +8,20 @@
     <fragment
         android:id="@+id/hotBoardFragment"
         android:name="com.tonyyang.typtt.ui.hotboard.HotBoardFragment"
-        android:label="hotboard_fragment"
-        tools:layout="@layout/fragment_hotboard" />
+        android:label="HotBoardFragment"
+        tools:layout="@layout/fragment_hotboard">
+        <action
+            android:id="@+id/action_hotBoardFragment_to_boardFragment"
+            app:destination="@id/boardFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/boardFragment"
+        android:name="com.tonyyang.typtt.ui.board.BoardFragment"
+        android:label="BoardFragment"
+        tools:layout="@layout/fragment_board">
+        <argument
+            android:name="url"
+            android:defaultValue="null"
+            app:argType="string" />
+    </fragment>
 </navigation>
