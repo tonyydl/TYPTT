@@ -1,16 +1,18 @@
 package com.tonyyang.typtt.ui.hotboard
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tonyyang.typtt.R
-import com.tonyyang.typtt.setupActionBar
+import com.tonyyang.typtt.model.HotBoard
+import com.tonyyang.typtt.viewmodel.HotBoardViewModel
 import kotlinx.android.synthetic.main.fragment_hotboard.*
 
 
@@ -21,7 +23,19 @@ class HotBoardFragment : Fragment() {
     }
 
     private val hotBoardAdapter by lazy {
-        HotBoardAdapter()
+        HotBoardAdapter().also {
+            it.listener = hotBoardItemListener
+        }
+    }
+
+    private val hotBoardItemListener = object : HotBoardAdapter.OnItemClickListener {
+
+        override fun onItemClick(view: View, hotBoard: HotBoard) {
+            Log.d(TAG, "onItemClick, view: $view, hotBoard: $hotBoard")
+            HotBoardFragmentDirections.actionHotBoardFragmentToBoardFragment(hotBoard.url).let {
+                view.findNavController().navigate(it)
+            }
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -31,9 +45,6 @@ class HotBoardFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        (activity as AppCompatActivity).setupActionBar(R.id.toolbar) {
-            setDisplayHomeAsUpEnabled(false)
-        }
         recycler_view.apply {
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(activity)
@@ -49,5 +60,9 @@ class HotBoardFragment : Fragment() {
             viewModel.loadData()
         }
         viewModel.loadData()
+    }
+
+    companion object {
+        private val TAG = HotBoardFragment::class.java.simpleName
     }
 }

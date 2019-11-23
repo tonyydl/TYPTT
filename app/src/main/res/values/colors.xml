@@ -3,9 +3,8 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
-
-    <!-- HotBoard item color-->
-    <color name="board_item_bg">#222831</color>
+    <color name="bg_color">#222831</color>
+    <!-- board item color-->
     <color name="board_item_text_color">#00adb5</color>
     <color name="board_item_category_text_color">#eeeeee</color>
     <color name="board_item_popularity_text_color">#393e46</color>

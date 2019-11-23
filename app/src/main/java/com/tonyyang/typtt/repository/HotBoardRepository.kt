@@ -1,6 +1,7 @@
 package com.tonyyang.typtt.repository
 
-import com.tonyyang.typtt.ui.hotboard.HotBoard
+import com.tonyyang.typtt.BuildConfig
+import com.tonyyang.typtt.model.HotBoard
 import io.reactivex.Observable
 import io.reactivex.ObservableOnSubscribe
 import org.jsoup.Jsoup
@@ -30,7 +31,7 @@ object HotBoardRepository {
                             element.selectFirst(".board-title").text(),
                             element.selectFirst(".board-class").text(),
                             Integer.valueOf(element.selectFirst(".board-nuser").child(0).text()),
-                            "https://www.ptt.cc/" + element.attr("href")))
+                            BuildConfig.BASE_URL + element.attr("href")))
                 }
             }
         }
