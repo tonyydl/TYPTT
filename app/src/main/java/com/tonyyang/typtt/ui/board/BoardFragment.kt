@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tonyyang.typtt.R
 import com.tonyyang.typtt.model.Articles
+import com.tonyyang.typtt.repository.NetworkState
 import com.tonyyang.typtt.viewmodel.BoardViewModel
 import kotlinx.android.synthetic.main.fragment_board.*
 
@@ -49,11 +50,11 @@ class BoardFragment : Fragment() {
         viewModel.articleListLiveData.observe(this, Observer {
             boardAdapter.submitList(it)
         })
-        viewModel.isRefreshLiveData.observe(this, Observer {
-            swipe_refresh.isRefreshing = it
+        viewModel.refreshState.observe(this, Observer {
+            swipe_refresh.isRefreshing = it == NetworkState.LOADING
         })
         swipe_refresh.setOnRefreshListener {
-            viewModel.loadData(url)
+            viewModel.refresh()
         }
         viewModel.loadData(url)
     }

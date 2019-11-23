@@ -1,5 +1,6 @@
 package com.tonyyang.typtt.repository
 
+import androidx.lifecycle.Transformations
 import androidx.paging.Config
 import androidx.paging.toLiveData
 import com.tonyyang.typtt.model.Articles
@@ -17,6 +18,15 @@ object BoardRepository {
                         prefetchDistance = 4
                 )
         )
-        return Listing(livePagedList)
+        val refreshState = Transformations.switchMap(sourceFactory.sourceLiveData) {
+            it.initialLoad
+        }
+        return Listing(
+                pagedList = livePagedList,
+                refresh = {
+                    sourceFactory.sourceLiveData.value?.invalidate()
+                },
+                refreshState = refreshState
+        )
     }
 }

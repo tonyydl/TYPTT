@@ -1,5 +1,6 @@
 package com.tonyyang.typtt.repository
 
+import androidx.lifecycle.MutableLiveData
 import androidx.paging.PageKeyedDataSource
 import com.tonyyang.typtt.BuildConfig
 import com.tonyyang.typtt.ExecuteOnceObserver
@@ -16,26 +17,34 @@ import java.io.IOException
 
 class BoardDataSource(private val boardUrl: String) : PageKeyedDataSource<String, Articles>() {
 
+    val initialLoad by lazy {
+        MutableLiveData<NetworkState>()
+    }
+
     override fun loadInitial(params: LoadInitialParams<String>, callback: LoadInitialCallback<String, Articles>) {
+        initialLoad.postValue(NetworkState.LOADING)
         getSources(boardUrl)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribe(ExecuteOnceObserver(onExecuteOnceNext = {
                     callback.onResult(it.first, null, it.second)
+                    initialLoad.postValue(NetworkState.LOADED)
                 }, onExecuteOnceError = {
-
+                    initialLoad.postValue(NetworkState.error(it.message ?: "unknown err"))
                 }))
     }
 
     override fun loadAfter(params: LoadParams<String>, callback: LoadCallback<String, Articles>) {
+        initialLoad.postValue(NetworkState.LOADING)
         val boardUrl = params.key
         getSources(boardUrl)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribe(ExecuteOnceObserver(onExecuteOnceNext = {
                     callback.onResult(it.first, it.second)
+                    initialLoad.postValue(NetworkState.LOADED)
                 }, onExecuteOnceError = {
-
+                    initialLoad.postValue(NetworkState.error(it.message ?: "unknown err"))
                 }))
     }
 

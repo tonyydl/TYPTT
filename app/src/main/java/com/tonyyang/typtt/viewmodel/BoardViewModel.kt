@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.paging.PagedList
 import com.tonyyang.typtt.model.Articles
 import com.tonyyang.typtt.repository.BoardRepository
+import com.tonyyang.typtt.repository.NetworkState
 
 class BoardViewModel : ViewModel() {
 
@@ -23,8 +24,12 @@ class BoardViewModel : ViewModel() {
         it.pagedList
     }
 
-    val isRefreshLiveData by lazy {
-        MutableLiveData<Boolean>()
+    val refreshState: LiveData<NetworkState> = switchMap(repoResult) {
+        it.refreshState
+    }
+
+    fun refresh() {
+        repoResult.value?.refresh?.invoke()
     }
 
     fun loadData(boardUrl: String) {
