@@ -1,5 +1,6 @@
 package com.tonyyang.typtt.ui.board
 
+import android.annotation.SuppressLint
 import android.graphics.Color
 import android.text.Spannable
 import android.text.SpannableString
@@ -68,6 +69,7 @@ class BoardAdapter : PagedListAdapter<Articles, BoardAdapter.BoardHolder>(BoardD
             return oldItem.url == oldItem.url
         }
 
+        @SuppressLint("DiffUtilEquals")
         override fun areContentsTheSame(oldItem: Articles, newItem: Articles): Boolean {
             return oldItem == newItem
         }
