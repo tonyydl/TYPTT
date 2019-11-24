@@ -8,17 +8,23 @@
     <fragment
         android:id="@+id/hotBoardFragment"
         android:name="com.tonyyang.typtt.ui.hotboard.HotBoardFragment"
-        android:label="HotBoardFragment"
         tools:layout="@layout/fragment_hotboard">
         <action
             android:id="@+id/action_hotBoardFragment_to_boardFragment"
-            app:destination="@id/boardFragment" />
+            app:destination="@id/boardFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/boardFragment"
         android:name="com.tonyyang.typtt.ui.board.BoardFragment"
-        android:label="BoardFragment"
         tools:layout="@layout/fragment_board">
+        <argument
+            android:name="title"
+            android:defaultValue="null"
+            app:argType="string" />
         <argument
             android:name="url"
             android:defaultValue="null"

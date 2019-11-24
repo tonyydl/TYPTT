@@ -1,6 +1,5 @@
 package com.tonyyang.typtt
 
-import androidx.annotation.IdRes
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import io.reactivex.disposables.CompositeDisposable
@@ -10,8 +9,7 @@ fun Disposable.addTo(compositeDisposable: CompositeDisposable) {
     compositeDisposable.add(this)
 }
 
-fun AppCompatActivity.setupActionBar(@IdRes toolbarId: Int, action: ActionBar.() -> Unit) {
-    setSupportActionBar(findViewById(toolbarId))
+fun AppCompatActivity.expandActionBar(action: ActionBar.() -> Unit) {
     supportActionBar?.run {
         action()
     }
