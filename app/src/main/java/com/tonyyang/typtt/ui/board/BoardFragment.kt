@@ -4,11 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tonyyang.typtt.R
+import com.tonyyang.typtt.expandActionBar
 import com.tonyyang.typtt.model.Articles
 import com.tonyyang.typtt.repository.NetworkState
 import com.tonyyang.typtt.viewmodel.BoardViewModel
@@ -39,8 +41,13 @@ class BoardFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val url = arguments?.let {
-            BoardFragmentArgs.fromBundle(it).url
+        val url = arguments?.run {
+            val bundle = BoardFragmentArgs.fromBundle(this)
+            val act = (activity as AppCompatActivity)
+            act.expandActionBar {
+                title = bundle.title
+            }
+            bundle.url
         } ?: ""
         recycler_view.apply {
             setHasFixedSize(true)

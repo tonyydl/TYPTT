@@ -5,12 +5,14 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tonyyang.typtt.R
+import com.tonyyang.typtt.expandActionBar
 import com.tonyyang.typtt.model.HotBoard
 import com.tonyyang.typtt.viewmodel.HotBoardViewModel
 import kotlinx.android.synthetic.main.fragment_hotboard.*
@@ -32,9 +34,12 @@ class HotBoardFragment : Fragment() {
 
         override fun onItemClick(view: View, hotBoard: HotBoard) {
             Log.d(TAG, "onItemClick, view: $view, hotBoard: $hotBoard")
-            HotBoardFragmentDirections.actionHotBoardFragmentToBoardFragment(hotBoard.url).let {
-                view.findNavController().navigate(it)
-            }
+            HotBoardFragmentDirections.actionHotBoardFragmentToBoardFragment(
+                    hotBoard.name,
+                    hotBoard.url)
+                    .let {
+                        view.findNavController().navigate(it)
+                    }
         }
     }
 
@@ -45,6 +50,10 @@ class HotBoardFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val act = (activity as AppCompatActivity)
+        act.expandActionBar {
+            title = getString(R.string.hot_board_name)
+        }
         recycler_view.apply {
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(activity)
