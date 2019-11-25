@@ -45,7 +45,8 @@ class BoardFragment : Fragment() {
             val bundle = BoardFragmentArgs.fromBundle(this)
             val act = (activity as AppCompatActivity)
             act.expandActionBar {
-                title = bundle.title
+                title = bundle.name
+                subtitle = bundle.title
             }
             bundle.url
         } ?: ""
