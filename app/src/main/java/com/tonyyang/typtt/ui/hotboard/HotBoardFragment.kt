@@ -36,6 +36,7 @@ class HotBoardFragment : Fragment() {
             Log.d(TAG, "onItemClick, view: $view, hotBoard: $hotBoard")
             HotBoardFragmentDirections.actionHotBoardFragmentToBoardFragment(
                     hotBoard.name,
+                    hotBoard.title,
                     hotBoard.url)
                     .let {
                         view.findNavController().navigate(it)
@@ -53,6 +54,7 @@ class HotBoardFragment : Fragment() {
         val act = (activity as AppCompatActivity)
         act.expandActionBar {
             title = getString(R.string.hot_board_name)
+            subtitle = null
         }
         recycler_view.apply {
             setHasFixedSize(true)

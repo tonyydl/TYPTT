@@ -22,6 +22,10 @@
         android:name="com.tonyyang.typtt.ui.board.BoardFragment"
         tools:layout="@layout/fragment_board">
         <argument
+            android:name="name"
+            android:defaultValue="null"
+            app:argType="string" />
+        <argument
             android:name="title"
             android:defaultValue="null"
             app:argType="string" />
