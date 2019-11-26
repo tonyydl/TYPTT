@@ -1,6 +1,7 @@
 package com.tonyyang.typtt.ui.board
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tonyyang.typtt.R
 import com.tonyyang.typtt.expandActionBar
@@ -31,7 +33,10 @@ class BoardFragment : Fragment() {
     private val boardItemListener = object : BoardAdapter.OnItemClickListener {
 
         override fun onItemClick(view: View, articles: Articles) {
-
+            Log.d(TAG, "onItemClick, view: $view, articles: $articles")
+            BoardFragmentDirections.actionBoardFragmentToArticleFragment(articles.title, articles.url).let {
+                view.findNavController().navigate(it)
+            }
         }
     }
 
@@ -65,5 +70,9 @@ class BoardFragment : Fragment() {
             viewModel.refresh()
         }
         viewModel.loadData(url)
+    }
+
+    companion object {
+        private val TAG = BoardFragment::class.java.simpleName
     }
 }

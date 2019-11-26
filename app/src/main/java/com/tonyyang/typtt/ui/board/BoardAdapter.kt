@@ -61,6 +61,9 @@ class BoardAdapter : PagedListAdapter<Articles, BoardAdapter.BoardHolder>(BoardD
             itemView.author.text = articles.author
             itemView.pinned.visibility = if (articles.type == Type.PINNED_ARTICLES) View.VISIBLE else View.INVISIBLE
             itemView.date.text = articles.date
+            itemView.setOnClickListener {
+                listener?.onItemClick(itemView, articles)
+            }
         }
     }
 

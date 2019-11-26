@@ -13,6 +13,8 @@ PTT is a well-known BBS station in Taiwan. I’d like to create a simplify app f
 
 <img src="screenshots/hotboard.png" height="650" />
 <img src="screenshots/board.png" height="650" />
+<img src="screenshots/board_gossiping.png" height="650" />
+<img src="screenshots/article_details.png" height="650" />
 
 ## Functionlity
 
