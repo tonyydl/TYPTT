@@ -22,11 +22,13 @@ implemented:
 
 * Crawl discussion board order by popularity.
 * Designed simple and friendly interface for the home page.
+* Enter each board.
+* Design article page.
 
 todo:
 
-* Enter each board.
-* Design article page.
+* Optimize the user interface.
+* Filter article by title.
 
 ## Author
 
