@@ -44,6 +44,8 @@ class ArticleFragment : Fragment() {
             act.expandActionBar {
                 title = bundle.articleTitle
                 subtitle = null
+                setHomeButtonEnabled(true)
+                setDisplayHomeAsUpEnabled(true)
             }
             bundle.articleUrl
         } ?: ""

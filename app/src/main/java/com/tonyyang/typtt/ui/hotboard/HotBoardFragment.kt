@@ -55,6 +55,8 @@ class HotBoardFragment : Fragment() {
         act.expandActionBar {
             title = getString(R.string.hot_board_name)
             subtitle = null
+            setHomeButtonEnabled(false)
+            setDisplayHomeAsUpEnabled(false)
         }
         recycler_view.apply {
             setHasFixedSize(true)

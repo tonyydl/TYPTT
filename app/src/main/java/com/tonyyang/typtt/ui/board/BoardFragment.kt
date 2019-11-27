@@ -52,6 +52,8 @@ class BoardFragment : Fragment() {
             act.expandActionBar {
                 title = bundle.name
                 subtitle = bundle.title
+                setHomeButtonEnabled(true)
+                setDisplayHomeAsUpEnabled(true)
             }
             bundle.url
         } ?: ""
