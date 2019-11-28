@@ -12,8 +12,8 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tonyyang.typtt.R
-import com.tonyyang.typtt.expandActionBar
 import com.tonyyang.typtt.model.HotBoard
+import com.tonyyang.typtt.setupActionBar
 import com.tonyyang.typtt.viewmodel.HotBoardViewModel
 import kotlinx.android.synthetic.main.fragment_hotboard.*
 
@@ -51,12 +51,13 @@ class HotBoardFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val act = (activity as AppCompatActivity)
-        act.expandActionBar {
-            title = getString(R.string.hot_board_name)
-            subtitle = null
-            setHomeButtonEnabled(false)
-            setDisplayHomeAsUpEnabled(false)
+        if (activity is AppCompatActivity) {
+            (activity as AppCompatActivity).setupActionBar {
+                title = getString(R.string.hot_board_name)
+                subtitle = null
+                setHomeButtonEnabled(false)
+                setDisplayHomeAsUpEnabled(false)
+            }
         }
         recycler_view.apply {
             setHasFixedSize(true)

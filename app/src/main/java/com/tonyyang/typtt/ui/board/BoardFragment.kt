@@ -12,9 +12,9 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tonyyang.typtt.R
-import com.tonyyang.typtt.expandActionBar
 import com.tonyyang.typtt.model.Articles
 import com.tonyyang.typtt.repository.NetworkState
+import com.tonyyang.typtt.setupActionBar
 import com.tonyyang.typtt.viewmodel.BoardViewModel
 import kotlinx.android.synthetic.main.fragment_board.*
 
@@ -48,12 +48,13 @@ class BoardFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val url = arguments?.run {
             val bundle = BoardFragmentArgs.fromBundle(this)
-            val act = (activity as AppCompatActivity)
-            act.expandActionBar {
-                title = bundle.name
-                subtitle = bundle.title
-                setHomeButtonEnabled(true)
-                setDisplayHomeAsUpEnabled(true)
+            if (activity is AppCompatActivity) {
+                (activity as AppCompatActivity).setupActionBar {
+                    title = bundle.name
+                    subtitle = bundle.title
+                    setHomeButtonEnabled(true)
+                    setDisplayHomeAsUpEnabled(true)
+                }
             }
             bundle.url
         } ?: ""

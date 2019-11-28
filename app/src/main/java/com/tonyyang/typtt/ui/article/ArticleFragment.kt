@@ -18,7 +18,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.tonyyang.typtt.BuildConfig
 import com.tonyyang.typtt.R
-import com.tonyyang.typtt.expandActionBar
+import com.tonyyang.typtt.setupActionBar
 import com.tonyyang.typtt.viewmodel.ArticleViewModel
 import kotlinx.android.synthetic.main.fragment_article.*
 import java.util.*
@@ -40,12 +40,13 @@ class ArticleFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val url = arguments?.run {
             val bundle = ArticleFragmentArgs.fromBundle(this)
-            val act = (activity as AppCompatActivity)
-            act.expandActionBar {
-                title = bundle.articleTitle
-                subtitle = null
-                setHomeButtonEnabled(true)
-                setDisplayHomeAsUpEnabled(true)
+            if (activity is AppCompatActivity) {
+                (activity as AppCompatActivity).setupActionBar {
+                    title = bundle.articleTitle
+                    subtitle = null
+                    setHomeButtonEnabled(true)
+                    setDisplayHomeAsUpEnabled(true)
+                }
             }
             bundle.articleUrl
         } ?: ""

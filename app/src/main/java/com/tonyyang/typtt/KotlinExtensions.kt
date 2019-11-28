@@ -9,7 +9,7 @@ fun Disposable.addTo(compositeDisposable: CompositeDisposable) {
     compositeDisposable.add(this)
 }
 
-fun AppCompatActivity.expandActionBar(action: ActionBar.() -> Unit) {
+fun AppCompatActivity.setupActionBar(action: ActionBar.() -> Unit) {
     supportActionBar?.run {
         action()
     }
