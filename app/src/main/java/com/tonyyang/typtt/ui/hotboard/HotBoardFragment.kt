@@ -11,13 +11,15 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tonyyang.typtt.R
+import com.tonyyang.typtt.databinding.FragmentHotboardBinding
 import com.tonyyang.typtt.model.HotBoard
 import com.tonyyang.typtt.setupActionBar
 import com.tonyyang.typtt.viewmodel.HotBoardViewModel
-import kotlinx.android.synthetic.main.fragment_hotboard.*
 
 
 class HotBoardFragment : Fragment() {
+
+    private lateinit var binding: FragmentHotboardBinding
 
     private val viewModel by lazy {
         ViewModelProvider(this).get(HotBoardViewModel::class.java)
@@ -45,20 +47,19 @@ class HotBoardFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
-        return inflater.inflate(R.layout.fragment_hotboard, container, false)
+        binding = FragmentHotboardBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (activity is AppCompatActivity) {
-            (activity as AppCompatActivity).setupActionBar {
-                title = getString(R.string.hot_board_name)
-                subtitle = null
-                setHomeButtonEnabled(false)
-                setDisplayHomeAsUpEnabled(false)
-            }
+        (activity as? AppCompatActivity)?.setupActionBar {
+            title = getString(R.string.hot_board_name)
+            subtitle = null
+            setHomeButtonEnabled(false)
+            setDisplayHomeAsUpEnabled(false)
         }
-        recycler_view.apply {
+        binding.recyclerView.apply {
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(activity)
             adapter = hotBoardAdapter
@@ -67,9 +68,9 @@ class HotBoardFragment : Fragment() {
             hotBoardAdapter.updateList(it)
         })
         viewModel.isRefreshLiveData.observe(viewLifecycleOwner, {
-            swipe_refresh.isRefreshing = it
+            binding.swipeRefresh.isRefreshing = it
         })
-        swipe_refresh.setOnRefreshListener {
+        binding.swipeRefresh.setOnRefreshListener {
             viewModel.loadData()
         }
         viewModel.loadData()

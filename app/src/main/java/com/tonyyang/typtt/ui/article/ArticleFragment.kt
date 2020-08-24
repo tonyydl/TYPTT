@@ -17,21 +17,24 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.tonyyang.typtt.BuildConfig
 import com.tonyyang.typtt.R
+import com.tonyyang.typtt.databinding.FragmentArticleBinding
 import com.tonyyang.typtt.setupActionBar
 import com.tonyyang.typtt.viewmodel.ArticleViewModel
-import kotlinx.android.synthetic.main.fragment_article.*
 import java.util.*
 import kotlin.collections.HashMap
 
 
 class ArticleFragment : Fragment() {
 
+    private lateinit var binding: FragmentArticleBinding
+
     private val viewModel by lazy {
         ViewModelProvider(this).get(ArticleViewModel::class.java)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_article, container, false)
+        binding = FragmentArticleBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -49,11 +52,11 @@ class ArticleFragment : Fragment() {
             }
             bundle.articleUrl
         } ?: ""
-        web_view.apply {
+        binding.webView.apply {
             webViewClient = WebViewClient()
             setBackgroundColor(ContextCompat.getColor(activity as Context, R.color.bg_color))
         }
-        with(web_view.settings) {
+        with(binding.webView.settings) {
             cacheMode = WebSettings.LOAD_DEFAULT
             domStorageEnabled = true
             databaseEnabled = true
@@ -75,7 +78,7 @@ class ArticleFragment : Fragment() {
                 val value = "${cookie.key}=${cookie.value}"
                 cookieManager.setCookie(BuildConfig.DOMAIN, value)
             }
-            web_view.loadUrl(url, HashMap<String, String>().apply {
+            binding.webView.loadUrl(url, HashMap<String, String>().apply {
                 put("from", BuildConfig.BASE_URL)
                 put("yes", "yes")
             })

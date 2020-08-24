@@ -10,14 +10,15 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.tonyyang.typtt.R
+import com.tonyyang.typtt.databinding.FragmentBoardBinding
 import com.tonyyang.typtt.model.Articles
 import com.tonyyang.typtt.repository.NetworkState
 import com.tonyyang.typtt.setupActionBar
 import com.tonyyang.typtt.viewmodel.BoardViewModel
-import kotlinx.android.synthetic.main.fragment_board.*
 
 class BoardFragment : Fragment() {
+
+    private lateinit var binding: FragmentBoardBinding
 
     private val viewModel by lazy {
         ViewModelProvider(this).get(BoardViewModel::class.java)
@@ -40,7 +41,8 @@ class BoardFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_board, container, false)
+        binding = FragmentBoardBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -57,7 +59,7 @@ class BoardFragment : Fragment() {
             }
             bundle.url
         } ?: ""
-        recycler_view.apply {
+        binding.recyclerView.apply {
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(activity)
             adapter = boardAdapter
@@ -66,9 +68,9 @@ class BoardFragment : Fragment() {
             boardAdapter.submitList(it)
         })
         viewModel.refreshState.observe(viewLifecycleOwner, {
-            swipe_refresh.isRefreshing = it == NetworkState.LOADING
+            binding.swipeRefresh.isRefreshing = it == NetworkState.LOADING
         })
-        swipe_refresh.setOnRefreshListener {
+        binding.swipeRefresh.setOnRefreshListener {
             viewModel.refresh()
         }
         viewModel.loadData(url)

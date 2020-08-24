@@ -11,7 +11,7 @@ import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.tonyyang.typtt.R
+import com.tonyyang.typtt.databinding.ItemBoardBinding
 import com.tonyyang.typtt.model.Articles
 import com.tonyyang.typtt.model.Type
 import kotlinx.android.synthetic.main.item_board.view.*
@@ -25,7 +25,8 @@ class BoardAdapter : PagedListAdapter<Articles, BoardAdapter.BoardHolder>(BoardD
     var listener: OnItemClickListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BoardHolder {
-        return BoardHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_board, parent, false))
+        val itemBinding = ItemBoardBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return BoardHolder(itemBinding.root)
     }
 
     override fun onBindViewHolder(holder: BoardHolder, position: Int) {
