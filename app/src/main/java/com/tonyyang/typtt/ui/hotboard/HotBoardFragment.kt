@@ -7,8 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tonyyang.typtt.R
@@ -21,7 +20,7 @@ import kotlinx.android.synthetic.main.fragment_hotboard.*
 class HotBoardFragment : Fragment() {
 
     private val viewModel by lazy {
-        ViewModelProviders.of(this).get(HotBoardViewModel::class.java)
+        ViewModelProvider(this).get(HotBoardViewModel::class.java)
     }
 
     private val hotBoardAdapter by lazy {
@@ -64,10 +63,10 @@ class HotBoardFragment : Fragment() {
             layoutManager = LinearLayoutManager(activity)
             adapter = hotBoardAdapter
         }
-        viewModel.hotBoardListLiveData.observe(this, Observer {
+        viewModel.hotBoardListLiveData.observe(viewLifecycleOwner, {
             hotBoardAdapter.updateList(it)
         })
-        viewModel.isRefreshLiveData.observe(this, Observer {
+        viewModel.isRefreshLiveData.observe(viewLifecycleOwner, {
             swipe_refresh.isRefreshing = it
         })
         swipe_refresh.setOnRefreshListener {

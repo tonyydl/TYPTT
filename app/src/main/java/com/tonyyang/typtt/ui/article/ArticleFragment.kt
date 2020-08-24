@@ -14,8 +14,7 @@ import android.webkit.WebViewClient
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import com.tonyyang.typtt.BuildConfig
 import com.tonyyang.typtt.R
 import com.tonyyang.typtt.setupActionBar
@@ -28,7 +27,7 @@ import kotlin.collections.HashMap
 class ArticleFragment : Fragment() {
 
     private val viewModel by lazy {
-        ViewModelProviders.of(this).get(ArticleViewModel::class.java)
+        ViewModelProvider(this).get(ArticleViewModel::class.java)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -62,7 +61,7 @@ class ArticleFragment : Fragment() {
             setAppCachePath(this@ArticleFragment.activity?.getDir("cache", Context.MODE_PRIVATE)?.path)
             javaScriptEnabled = true
         }
-        viewModel.cookiesLiveData.observe(this, Observer { cookies ->
+        viewModel.cookiesLiveData.observe(viewLifecycleOwner, { cookies ->
             val cookieManager = CookieManager.getInstance()
             cookieManager.setAcceptCookie(true)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {

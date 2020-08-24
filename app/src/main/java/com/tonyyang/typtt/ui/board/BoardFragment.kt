@@ -7,8 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tonyyang.typtt.R
@@ -21,7 +20,7 @@ import kotlinx.android.synthetic.main.fragment_board.*
 class BoardFragment : Fragment() {
 
     private val viewModel by lazy {
-        ViewModelProviders.of(this).get(BoardViewModel::class.java)
+        ViewModelProvider(this).get(BoardViewModel::class.java)
     }
 
     private val boardAdapter by lazy {
@@ -63,10 +62,10 @@ class BoardFragment : Fragment() {
             layoutManager = LinearLayoutManager(activity)
             adapter = boardAdapter
         }
-        viewModel.articleListLiveData.observe(this, Observer {
+        viewModel.articleListLiveData.observe(viewLifecycleOwner, {
             boardAdapter.submitList(it)
         })
-        viewModel.refreshState.observe(this, Observer {
+        viewModel.refreshState.observe(viewLifecycleOwner, {
             swipe_refresh.isRefreshing = it == NetworkState.LOADING
         })
         swipe_refresh.setOnRefreshListener {
