@@ -1,6 +1,6 @@
 package com.tonyyang.typtt.repository
 
-import io.reactivex.Observable
+import io.reactivex.rxjava3.core.Observable
 import org.jsoup.Connection
 import org.jsoup.Jsoup
 import java.io.IOException

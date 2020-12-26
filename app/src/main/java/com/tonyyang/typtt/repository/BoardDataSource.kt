@@ -7,9 +7,9 @@ import com.tonyyang.typtt.ExecuteOnceObserver
 import com.tonyyang.typtt.model.Articles
 import com.tonyyang.typtt.model.GeneralArticles
 import com.tonyyang.typtt.model.PinnedArticles
-import io.reactivex.Observable
-import io.reactivex.ObservableOnSubscribe
-import io.reactivex.schedulers.Schedulers
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.core.ObservableOnSubscribe
+import io.reactivex.rxjava3.schedulers.Schedulers
 import org.jsoup.Connection
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document

@@ -2,8 +2,8 @@ package com.tonyyang.typtt.repository
 
 import com.tonyyang.typtt.BuildConfig
 import com.tonyyang.typtt.model.HotBoard
-import io.reactivex.Observable
-import io.reactivex.ObservableOnSubscribe
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.core.ObservableOnSubscribe
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import java.io.IOException
