@@ -1,6 +1,6 @@
 # TYPTT
 
-[![Build Status](https://travis-ci.org/tonyyang924/TYPTT.svg?branch=master)](https://travis-ci.org/tonyyang924/TYPTT)
+[![Build Status](https://travis-ci.org/solomaticydl/TYPTT.svg?branch=master)](https://travis-ci.org/solomaticydl/TYPTT)
 
 PTT is a well-known BBS station in Taiwan. I’d like to create a simplify app for PTT.
 
@@ -16,7 +16,7 @@ PTT is a well-known BBS station in Taiwan. I’d like to create a simplify app f
 <img src="screenshots/board_gossiping.png" height="650" />
 <img src="screenshots/article_details.png" height="650" />
 
-## Functionlity
+## Functionality
 
 implemented:
 
@@ -32,7 +32,7 @@ todo:
 
 ## Author
 
-* Tony Yang - initial & develop basic feature - [tonyyang924](https://github.com/tonyyang924)
+* Tony Yang - initial & develop basic feature - [solomaticydl](https://github.com/solomaticydl)
 
 ## Reference
 
@@ -40,7 +40,7 @@ todo:
 
 ## Feedback
 
-[Create an issue](https://github.com/tonyyang924/TYPTT/issues) for all discussions, bugs, feature requests and pull requests.
+[Create an issue](https://github.com/solomaticydl/TYPTT/issues) for all discussions, bugs, feature requests and pull requests.
 
 ## License
 
