@@ -3,48 +3,58 @@ package com.tonyyang.typtt.ui.hotboard
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.tonyyang.typtt.databinding.ItemHotboardBinding
 import com.tonyyang.typtt.model.HotBoard
-import kotlinx.android.synthetic.main.item_hotboard.view.*
 
-class HotBoardAdapter : RecyclerView.Adapter<HotBoardAdapter.HotBoardHolder>() {
+class HotBoardAdapter : ListAdapter<HotBoard, HotBoardAdapter.HotBoardHolder>(diffCallback) {
 
-    interface OnItemClickListener {
-        fun onItemClick(view: View, hotBoard: HotBoard)
-    }
-
-    var listener: OnItemClickListener? = null
-
-    private val hotBoardList = mutableListOf<HotBoard>()
-
-    fun updateList(hotBoardList: List<HotBoard>) {
-        this.hotBoardList.clear()
-        this.hotBoardList.addAll(hotBoardList)
-        notifyDataSetChanged()
-    }
+    internal var clickListener: (View, HotBoard) -> Unit = { _, _ -> }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HotBoardHolder {
-        val itemBinding = ItemHotboardBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return HotBoardHolder(itemBinding.root)
+        return HotBoardHolder(
+            ItemHotboardBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            ), clickListener
+        )
     }
 
     override fun onBindViewHolder(holder: HotBoardHolder, position: Int) {
-        holder.bind(hotBoardList[position])
+        holder.bind(getItem(position))
     }
 
-    override fun getItemCount(): Int {
-        return hotBoardList.size
-    }
+    class HotBoardHolder(
+        binding: ItemHotboardBinding,
+        private val clickListener: (View, HotBoard) -> Unit
+    ) : RecyclerView.ViewHolder(binding.root) {
+        private val nameTv = binding.name
+        private val titleTv = binding.title
+        private val categoryTv = binding.category
+        private val popularityTv = binding.popularity
 
-    inner class HotBoardHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(hotBoard: HotBoard) {
-            itemView.name.text = hotBoard.name
-            itemView.title.text = hotBoard.title
-            itemView.category.text = hotBoard.category
-            itemView.popularity.show(hotBoard.popularity)
+            nameTv.text = hotBoard.name
+            titleTv.text = hotBoard.title
+            categoryTv.text = hotBoard.category
+            popularityTv.show(hotBoard.popularity)
             itemView.setOnClickListener {
-                listener?.onItemClick(itemView, hotBoard)
+                clickListener.invoke(itemView, hotBoard)
+            }
+        }
+    }
+
+    companion object {
+        private val diffCallback = object : DiffUtil.ItemCallback<HotBoard>() {
+            override fun areItemsTheSame(oldItem: HotBoard, newItem: HotBoard): Boolean {
+                return oldItem.url == newItem.url
+            }
+
+            override fun areContentsTheSame(oldItem: HotBoard, newItem: HotBoard): Boolean {
+                return oldItem == newItem
             }
         }
     }

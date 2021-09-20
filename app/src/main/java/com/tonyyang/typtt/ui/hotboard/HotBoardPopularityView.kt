@@ -6,30 +6,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.RelativeLayout
 import com.tonyyang.typtt.R
-import kotlinx.android.synthetic.main.view_popularity.view.*
+import com.tonyyang.typtt.databinding.ViewPopularityBinding
 
 class HotBoardPopularityView @JvmOverloads constructor(
-        context: Context,
-        attrs: AttributeSet? = null,
-        defStyleAttr: Int = 0
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
 ) : RelativeLayout(context, attrs, defStyleAttr) {
 
-    companion object {
-        const val MIN_NUMBER: Int = 1
-        const val MAX_NUMBER: Int = 2000
-    }
-
-    init {
-        LayoutInflater.from(context).inflate(R.layout.view_popularity, this, true)
-        if (attrs != null) {
-            val a = context.obtainStyledAttributes(attrs, R.styleable.HotBoardPopularityView)
-            if (a.hasValue(R.styleable.HotBoardPopularityView_popularity_number)) {
-                val number = a.getInt(R.styleable.HotBoardPopularityView_popularity_number, 0)
-                show(number)
-            }
-            a.recycle()
-        }
-    }
+    private var binding: ViewPopularityBinding =
+        ViewPopularityBinding.inflate(LayoutInflater.from(context), this, true)
 
     fun show(number: Int) {
         when {
@@ -40,19 +26,37 @@ class HotBoardPopularityView @JvmOverloads constructor(
     }
 
     private fun showIcon() {
-        number_tv.visibility = View.GONE
-        icon_iv.visibility = View.VISIBLE
+        binding.tvNumber.visibility = View.GONE
+        binding.ivIcon.visibility = View.VISIBLE
         visibility = View.VISIBLE
     }
 
     private fun showNumber(number: Int) {
-        number_tv.text = "".plus(number)
-        number_tv.visibility = View.VISIBLE
-        icon_iv.visibility = View.GONE
+        binding.tvNumber.run {
+            text = "".plus(number)
+            visibility = View.VISIBLE
+        }
+        binding.ivIcon.visibility = View.GONE
         visibility = View.VISIBLE
     }
 
     private fun hidden() {
         visibility = View.GONE
+    }
+
+    init {
+        if (attrs != null) {
+            val a = context.obtainStyledAttributes(attrs, R.styleable.HotBoardPopularityView)
+            if (a.hasValue(R.styleable.HotBoardPopularityView_popularity_number)) {
+                val number = a.getInt(R.styleable.HotBoardPopularityView_popularity_number, 0)
+                show(number)
+            }
+            a.recycle()
+        }
+    }
+
+    companion object {
+        const val MIN_NUMBER: Int = 1
+        const val MAX_NUMBER: Int = 2000
     }
 }

@@ -27,26 +27,25 @@ class HotBoardFragment : Fragment() {
 
     private val hotBoardAdapter by lazy {
         HotBoardAdapter().also {
-            it.listener = hotBoardItemListener
+            it.clickListener = hotBoardItemClickListener
         }
     }
 
-    private val hotBoardItemListener = object : HotBoardAdapter.OnItemClickListener {
-
-        override fun onItemClick(view: View, hotBoard: HotBoard) {
-            Log.d(TAG, "onItemClick, view: $view, hotBoard: $hotBoard")
-            HotBoardFragmentDirections.actionHotBoardFragmentToBoardFragment(
-                    hotBoard.name,
-                    hotBoard.title,
-                    hotBoard.url)
-                    .let {
-                        view.findNavController().navigate(it)
-                    }
+    private val hotBoardItemClickListener: (View, HotBoard) -> Unit = { view, hotBoard ->
+        Log.d(TAG, "onItemClick, view: $view, hotBoard: $hotBoard")
+        HotBoardFragmentDirections.actionHotBoardFragmentToBoardFragment(
+            hotBoard.name,
+            hotBoard.title,
+            hotBoard.url
+        ).let {
+            view.findNavController().navigate(it)
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         binding = FragmentHotboardBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -65,7 +64,7 @@ class HotBoardFragment : Fragment() {
             adapter = hotBoardAdapter
         }
         viewModel.hotBoardListLiveData.observe(viewLifecycleOwner, {
-            hotBoardAdapter.updateList(it)
+            hotBoardAdapter.submitList(it)
         })
         viewModel.isRefreshLiveData.observe(viewLifecycleOwner, {
             binding.swipeRefresh.isRefreshing = it

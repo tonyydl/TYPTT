@@ -26,21 +26,23 @@ class BoardFragment : Fragment() {
 
     private val boardAdapter by lazy {
         BoardAdapter().also {
-            it.listener = boardItemListener
+            it.clickListener = boardItemClickListener
         }
     }
 
-    private val boardItemListener = object : BoardAdapter.OnItemClickListener {
-
-        override fun onItemClick(view: View, articles: Articles) {
-            Log.d(TAG, "onItemClick, view: $view, articles: $articles")
-            BoardFragmentDirections.actionBoardFragmentToArticleFragment(articles.title, articles.url).let {
+    private val boardItemClickListener: (View, Articles) -> Unit = { view, articles ->
+        Log.d(TAG, "onItemClick, view: $view, articles: $articles")
+        BoardFragmentDirections.actionBoardFragmentToArticleFragment(articles.title, articles.url)
+            .let {
                 view.findNavController().navigate(it)
             }
-        }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         binding = FragmentBoardBinding.inflate(inflater, container, false)
         return binding.root
     }
