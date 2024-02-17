@@ -1,4 +1,4 @@
-package com.tonyyang.typtt.viewmodel
+package com.tonyyang.typtt.ui.board
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -6,11 +6,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.map
 import androidx.lifecycle.switchMap
 import androidx.paging.PagedList
-import com.tonyyang.typtt.model.Articles
+import com.tonyyang.typtt.data.Articles
 import com.tonyyang.typtt.repository.BoardRepository
 import com.tonyyang.typtt.repository.NetworkState
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class BoardViewModel : ViewModel() {
+@HiltViewModel
+class BoardViewModel @Inject constructor() : ViewModel() {
 
     private val articleLiveData by lazy {
         MutableLiveData<String>()
@@ -20,9 +23,7 @@ class BoardViewModel : ViewModel() {
 
     val articleListLiveData: LiveData<PagedList<Articles>> = repoResult.switchMap { it.pagedList }
 
-    val refreshState: LiveData<NetworkState> = repoResult.switchMap {
-        it.refreshState
-    }
+    val refreshState: LiveData<NetworkState> = repoResult.switchMap { it.refreshState }
 
     fun refresh() {
         repoResult.value?.refresh?.invoke()

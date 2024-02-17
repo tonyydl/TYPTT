@@ -7,7 +7,7 @@ import java.io.IOException
 
 object ArticleRepository {
 
-    fun getArticleCookies(articleUrl: String): Observable<Map<String, String>> = Observable.create {
+    fun getArticleCookies(articleUrl: String) = Observable.create {
         try {
             val cookies = Jsoup.connect(articleUrl)
                 .method(Connection.Method.GET)

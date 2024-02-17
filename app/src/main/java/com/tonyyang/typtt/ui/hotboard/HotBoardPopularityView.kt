@@ -33,7 +33,7 @@ class HotBoardPopularityView @JvmOverloads constructor(
 
     private fun showNumber(number: Int) {
         binding.tvNumber.run {
-            text = "".plus(number)
+            text = "$number"
             visibility = View.VISIBLE
         }
         binding.ivIcon.visibility = View.GONE

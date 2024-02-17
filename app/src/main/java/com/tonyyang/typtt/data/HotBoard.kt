@@ -1,4 +1,4 @@
-package com.tonyyang.typtt.model
+package com.tonyyang.typtt.data
 
 data class HotBoard(
     val name: String,

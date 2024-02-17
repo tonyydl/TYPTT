@@ -6,12 +6,12 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.tonyyang.typtt.data.HotBoard
 import com.tonyyang.typtt.databinding.ItemHotboardBinding
-import com.tonyyang.typtt.model.HotBoard
 
-class HotBoardAdapter : ListAdapter<HotBoard, HotBoardAdapter.HotBoardHolder>(diffCallback) {
-
-    internal var clickListener: (View, HotBoard) -> Unit = { _, _ -> }
+class HotBoardAdapter(
+    private val clickListener: (View, HotBoard) -> Unit
+) : ListAdapter<HotBoard, HotBoardAdapter.HotBoardHolder>(diffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HotBoardHolder {
         return HotBoardHolder(
@@ -19,7 +19,8 @@ class HotBoardAdapter : ListAdapter<HotBoard, HotBoardAdapter.HotBoardHolder>(di
                 LayoutInflater.from(parent.context),
                 parent,
                 false
-            ), clickListener
+            ),
+            clickListener
         )
     }
 

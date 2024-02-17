@@ -1,4 +1,4 @@
-package com.tonyyang.typtt.model
+package com.tonyyang.typtt.data
 
 enum class Type {
     NONE, ARTICLES, PINNED_ARTICLES

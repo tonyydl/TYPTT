@@ -6,33 +6,26 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tonyyang.typtt.R
+import com.tonyyang.typtt.data.HotBoard
 import com.tonyyang.typtt.databinding.FragmentHotboardBinding
-import com.tonyyang.typtt.model.HotBoard
 import com.tonyyang.typtt.setupActionBar
-import com.tonyyang.typtt.viewmodel.HotBoardViewModel
-import timber.log.Timber
 
 
 class HotBoardFragment : Fragment() {
 
     private lateinit var binding: FragmentHotboardBinding
 
-    private val viewModel by lazy {
-        ViewModelProvider(this).get(HotBoardViewModel::class.java)
-    }
+    private val viewModel by viewModels<HotBoardViewModel>()
 
     private val hotBoardAdapter by lazy {
-        HotBoardAdapter().also {
-            it.clickListener = hotBoardItemClickListener
-        }
+        HotBoardAdapter(hotBoardItemClickListener)
     }
 
     private val hotBoardItemClickListener: (View, HotBoard) -> Unit = { view, hotBoard ->
-        Timber.d("onItemClick, view: $view, hotBoard: $hotBoard")
         HotBoardFragmentDirections.actionHotBoardFragmentToBoardFragment(
             hotBoard.name,
             hotBoard.title,
@@ -63,19 +56,15 @@ class HotBoardFragment : Fragment() {
             layoutManager = LinearLayoutManager(activity)
             adapter = hotBoardAdapter
         }
-        viewModel.hotBoardListLiveData.observe(viewLifecycleOwner, {
+        viewModel.hotBoardListLiveData.observe(viewLifecycleOwner) {
             hotBoardAdapter.submitList(it)
-        })
-        viewModel.isRefreshLiveData.observe(viewLifecycleOwner, {
+        }
+        viewModel.isRefreshLiveData.observe(viewLifecycleOwner) {
             binding.swipeRefresh.isRefreshing = it
-        })
+        }
         binding.swipeRefresh.setOnRefreshListener {
             viewModel.loadData()
         }
         viewModel.loadData()
-    }
-
-    companion object {
-        private val TAG = HotBoardFragment::class.java.simpleName
     }
 }

@@ -2,6 +2,8 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.org.jetbrains.kotlin.android)
     id("androidx.navigation.safeargs.kotlin")
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.hilt)
 }
 
 android {
@@ -20,12 +22,12 @@ android {
         buildConfigField(
             type = "String",
             name = "DOMAIN",
-            value = "\"${properties["DOMAIN"]?.toString() ?: ""}\""
+            value = "\"${properties["DOMAIN"]?.toString().orEmpty()}\""
         )
         buildConfigField(
             type = "String",
             name = "BASE_URL",
-            value = "\"${properties["BASE_URL"]?.toString() ?: ""}\""
+            value = "\"${properties["BASE_URL"]?.toString().orEmpty()}\""
         )
     }
     buildTypes {
@@ -71,4 +73,6 @@ dependencies {
     androidTestImplementation(libs.androidx.test.espresso.core)
     implementation(libs.kotlin)
     implementation(libs.timber)
+    ksp(libs.hilt.android.compiler)
+    implementation(libs.hilt.android)
 }

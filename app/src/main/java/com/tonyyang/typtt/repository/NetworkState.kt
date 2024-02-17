@@ -6,7 +6,7 @@ enum class Status {
     FAILED
 }
 
-data class NetworkState private constructor(
+data class NetworkState(
     val status: Status,
     val msg: String? = null
 ) {

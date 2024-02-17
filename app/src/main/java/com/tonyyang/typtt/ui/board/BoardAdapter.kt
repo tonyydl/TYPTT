@@ -12,9 +12,9 @@ import android.widget.TextView
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.tonyyang.typtt.data.Articles
+import com.tonyyang.typtt.data.Type
 import com.tonyyang.typtt.databinding.ItemBoardBinding
-import com.tonyyang.typtt.model.Articles
-import com.tonyyang.typtt.model.Type
 import timber.log.Timber
 
 class BoardAdapter :
@@ -96,7 +96,7 @@ class BoardAdapter :
 
         private val diffCallback = object : DiffUtil.ItemCallback<Articles>() {
             override fun areItemsTheSame(oldItem: Articles, newItem: Articles): Boolean {
-                return oldItem.url == oldItem.url
+                return oldItem.url == newItem.url
             }
 
             @SuppressLint("DiffUtilEquals")

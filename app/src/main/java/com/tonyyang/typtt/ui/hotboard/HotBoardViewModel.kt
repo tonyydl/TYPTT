@@ -1,9 +1,9 @@
-package com.tonyyang.typtt.viewmodel
+package com.tonyyang.typtt.ui.hotboard
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.tonyyang.typtt.addTo
-import com.tonyyang.typtt.model.HotBoard
+import com.tonyyang.typtt.data.HotBoard
 import com.tonyyang.typtt.repository.HotBoardRepository
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable

@@ -2,7 +2,6 @@ package com.tonyyang.typtt.ui.article
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,29 +12,27 @@ import android.webkit.WebViewClient
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import com.tonyyang.typtt.BuildConfig
 import com.tonyyang.typtt.R
 import com.tonyyang.typtt.databinding.FragmentArticleBinding
 import com.tonyyang.typtt.setupActionBar
-import com.tonyyang.typtt.viewmodel.ArticleViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 import java.util.*
 
-
+@AndroidEntryPoint
 class ArticleFragment : Fragment() {
 
     private lateinit var binding: FragmentArticleBinding
 
-    private val viewModel by lazy {
-        ViewModelProvider(this).get(ArticleViewModel::class.java)
-    }
+    private val viewModel by viewModels<ArticleViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentArticleBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -54,7 +51,7 @@ class ArticleFragment : Fragment() {
                 }
             }
             bundle.articleUrl
-        } ?: ""
+        }.orEmpty()
         binding.webView.apply {
             webViewClient = WebViewClient()
             setBackgroundColor(ContextCompat.getColor(activity as Context, R.color.bg_color))
@@ -65,15 +62,11 @@ class ArticleFragment : Fragment() {
             databaseEnabled = true
             javaScriptEnabled = true
         }
-        viewModel.cookiesLiveData.observe(viewLifecycleOwner, { cookies ->
+        viewModel.cookiesLiveData.observe(viewLifecycleOwner) { cookies ->
             val cookieManager = CookieManager.getInstance()
             cookieManager.setAcceptCookie(true)
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                cookieManager.removeAllCookies {
-                    Timber.d(String.format(Locale.getDefault(), "Remove cookies: %b", it))
-                }
-            } else {
-                cookieManager.removeAllCookie()
+            cookieManager.removeAllCookies {
+                Timber.d(String.format(Locale.getDefault(), "Remove cookies: %b", it))
             }
             for (cookie in cookies) {
                 val value = "${cookie.key}=${cookie.value}"
@@ -83,7 +76,7 @@ class ArticleFragment : Fragment() {
                 put("from", BuildConfig.BASE_URL)
                 put("yes", "yes")
             })
-        })
+        }
         viewModel.loadCookies(url)
     }
 }
