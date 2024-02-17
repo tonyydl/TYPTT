@@ -5,7 +5,6 @@ import android.graphics.Color
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.tonyyang.typtt.databinding.ItemBoardBinding
 import com.tonyyang.typtt.model.Articles
 import com.tonyyang.typtt.model.Type
+import timber.log.Timber
 
 class BoardAdapter :
     PagedListAdapter<Articles, BoardAdapter.BoardHolder>(diffCallback) {
@@ -37,7 +37,7 @@ class BoardAdapter :
         getItem(position)?.let {
             holder.bind(it)
         } ?: run {
-            Log.w(TAG, "couldn't get item from position=$position")
+            Timber.w("couldn't get item from position=$position")
         }
     }
 
@@ -90,7 +90,6 @@ class BoardAdapter :
     }
 
     companion object {
-        private const val TAG = "BoardAdapter"
         private val level1 = 1..9
         private const val LEVEL2 = 10
         private const val LEVEL3 = "爆"

@@ -1,7 +1,6 @@
 package com.tonyyang.typtt.ui.board
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +14,7 @@ import com.tonyyang.typtt.model.Articles
 import com.tonyyang.typtt.repository.NetworkState
 import com.tonyyang.typtt.setupActionBar
 import com.tonyyang.typtt.viewmodel.BoardViewModel
+import timber.log.Timber
 
 class BoardFragment : Fragment() {
 
@@ -31,7 +31,7 @@ class BoardFragment : Fragment() {
     }
 
     private val boardItemClickListener: (View, Articles) -> Unit = { view, articles ->
-        Log.d(TAG, "onItemClick, view: $view, articles: $articles")
+        Timber.d("onItemClick, view: $view, articles: $articles")
         BoardFragmentDirections.actionBoardFragmentToArticleFragment(articles.title, articles.url)
             .let {
                 view.findNavController().navigate(it)
@@ -76,9 +76,5 @@ class BoardFragment : Fragment() {
             viewModel.refresh()
         }
         viewModel.loadData(url)
-    }
-
-    companion object {
-        private val TAG = BoardFragment::class.java.simpleName
     }
 }

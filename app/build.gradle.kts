@@ -70,5 +70,5 @@ dependencies {
     androidTestImplementation(libs.androidx.test.runner)
     androidTestImplementation(libs.androidx.test.espresso.core)
     implementation(libs.kotlin)
-    implementation(libs.com.orhanobut.logger)
+    implementation(libs.timber)
 }

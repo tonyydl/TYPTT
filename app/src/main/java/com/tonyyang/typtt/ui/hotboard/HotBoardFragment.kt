@@ -1,7 +1,6 @@
 package com.tonyyang.typtt.ui.hotboard
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +14,7 @@ import com.tonyyang.typtt.databinding.FragmentHotboardBinding
 import com.tonyyang.typtt.model.HotBoard
 import com.tonyyang.typtt.setupActionBar
 import com.tonyyang.typtt.viewmodel.HotBoardViewModel
+import timber.log.Timber
 
 
 class HotBoardFragment : Fragment() {
@@ -32,7 +32,7 @@ class HotBoardFragment : Fragment() {
     }
 
     private val hotBoardItemClickListener: (View, HotBoard) -> Unit = { view, hotBoard ->
-        Log.d(TAG, "onItemClick, view: $view, hotBoard: $hotBoard")
+        Timber.d("onItemClick, view: $view, hotBoard: $hotBoard")
         HotBoardFragmentDirections.actionHotBoardFragmentToBoardFragment(
             hotBoard.name,
             hotBoard.title,

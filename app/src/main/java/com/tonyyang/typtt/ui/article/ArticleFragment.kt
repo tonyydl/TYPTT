@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,8 +19,8 @@ import com.tonyyang.typtt.R
 import com.tonyyang.typtt.databinding.FragmentArticleBinding
 import com.tonyyang.typtt.setupActionBar
 import com.tonyyang.typtt.viewmodel.ArticleViewModel
+import timber.log.Timber
 import java.util.*
-import kotlin.collections.HashMap
 
 
 class ArticleFragment : Fragment() {
@@ -71,7 +70,7 @@ class ArticleFragment : Fragment() {
             cookieManager.setAcceptCookie(true)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 cookieManager.removeAllCookies {
-                    Log.d(TAG, String.format(Locale.getDefault(), "Remove cookies: %b", it))
+                    Timber.d(String.format(Locale.getDefault(), "Remove cookies: %b", it))
                 }
             } else {
                 cookieManager.removeAllCookie()
@@ -86,9 +85,5 @@ class ArticleFragment : Fragment() {
             })
         })
         viewModel.loadCookies(url)
-    }
-
-    companion object {
-        private val TAG = ArticleFragment::class.java.simpleName
     }
 }
