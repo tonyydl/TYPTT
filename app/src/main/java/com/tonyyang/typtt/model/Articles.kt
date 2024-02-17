@@ -4,13 +4,12 @@ enum class Type {
     NONE, ARTICLES, PINNED_ARTICLES
 }
 
-open class Articles(
-    open val title: String,
-    open val author: String,
-    open val like: String,
-    open val mark: String,
-    open val date: String,
-    open val url: String
-) {
-    open val type: Type = Type.NONE
-}
+data class Articles(
+    val title: String,
+    val author: String,
+    val like: String,
+    val mark: String,
+    val date: String,
+    val url: String,
+    val type: Type = Type.NONE
+)

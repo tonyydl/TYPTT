@@ -5,8 +5,7 @@ import androidx.paging.PageKeyedDataSource
 import com.tonyyang.typtt.BuildConfig
 import com.tonyyang.typtt.ExecuteOnceObserver
 import com.tonyyang.typtt.model.Articles
-import com.tonyyang.typtt.model.GeneralArticles
-import com.tonyyang.typtt.model.PinnedArticles
+import com.tonyyang.typtt.model.Type
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.ObservableOnSubscribe
 import io.reactivex.rxjava3.schedulers.Schedulers
@@ -96,17 +95,16 @@ class BoardDataSource(private val boardUrl: String) : PageKeyedDataSource<String
                         val url =
                             BuildConfig.BASE_URL + element.selectFirst(".title")?.selectFirst("a")
                                 ?.attr("href")
-                        /**
-                         * If a separation line between a general article and a top article is detected,
-                         * then use [PinnedArticles] instead of [GeneralArticles]
-                         */
                         if (isTopArea) {
                             // Add item by descending
-                            this.add(0, PinnedArticles(title, author, like, mark, date, url))
+                            this.add(
+                                0,
+                                Articles(title, author, like, mark, date, url, Type.PINNED_ARTICLES)
+                            )
                             return@forEach
                         }
                         // Add item by descending
-                        this.add(0, GeneralArticles(title, author, like, mark, date, url))
+                        this.add(0, Articles(title, author, like, mark, date, url, Type.ARTICLES))
                     }
                 }
             }, prevUrl)
