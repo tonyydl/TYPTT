@@ -21,12 +21,12 @@ class ArticleViewModel : ViewModel() {
 
     fun loadCookies(articleUrl: String) {
         ArticleRepository.getArticleCookies(articleUrl)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe {
-                    Log.i(TAG, it.toString())
-                    cookiesLiveData.value = it
-                }.addTo(compositeDisposable)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe {
+                Log.i(TAG, it.toString())
+                cookiesLiveData.value = it
+            }.addTo(compositeDisposable)
     }
 
     companion object {

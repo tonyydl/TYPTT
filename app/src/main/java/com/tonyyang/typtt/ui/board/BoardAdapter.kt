@@ -58,12 +58,15 @@ class BoardAdapter :
                     likeCount in level1 -> {
                         ForegroundColorSpan(Color.GREEN)
                     }
+
                     likeCount >= LEVEL2 -> {
                         ForegroundColorSpan(Color.YELLOW)
                     }
+
                     articles.like == LEVEL3 -> {
                         ForegroundColorSpan(Color.RED)
                     }
+
                     else -> {
                         ForegroundColorSpan(Color.GRAY)
                     }

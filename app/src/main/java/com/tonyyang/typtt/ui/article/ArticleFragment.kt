@@ -32,7 +32,11 @@ class ArticleFragment : Fragment() {
         ViewModelProvider(this).get(ArticleViewModel::class.java)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         binding = FragmentArticleBinding.inflate(inflater, container, false)
         return binding.root
     }

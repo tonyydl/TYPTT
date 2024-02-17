@@ -26,12 +26,12 @@ class HotBoardViewModel : ViewModel() {
     fun loadData() {
         isRefreshLiveData.postValue(true)
         HotBoardRepository.getHotBoards()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe {
-                    hotBoardListLiveData.value = it
-                    isRefreshLiveData.value = false
-                }.addTo(compositeDisposable)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe {
+                hotBoardListLiveData.value = it
+                isRefreshLiveData.value = false
+            }.addTo(compositeDisposable)
     }
 
     override fun onCleared() {

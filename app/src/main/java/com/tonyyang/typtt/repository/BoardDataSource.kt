@@ -21,31 +21,34 @@ class BoardDataSource(private val boardUrl: String) : PageKeyedDataSource<String
         MutableLiveData<NetworkState>()
     }
 
-    override fun loadInitial(params: LoadInitialParams<String>, callback: LoadInitialCallback<String, Articles>) {
+    override fun loadInitial(
+        params: LoadInitialParams<String>,
+        callback: LoadInitialCallback<String, Articles>
+    ) {
         initialLoad.postValue(NetworkState.LOADING)
         getSources(boardUrl)
-                .subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.io())
-                .subscribe(ExecuteOnceObserver(onExecuteOnceNext = {
-                    callback.onResult(it.first, null, it.second)
-                    initialLoad.postValue(NetworkState.LOADED)
-                }, onExecuteOnceError = {
-                    initialLoad.postValue(NetworkState.error(it.message ?: "unknown err"))
-                }))
+            .subscribeOn(Schedulers.io())
+            .observeOn(Schedulers.io())
+            .subscribe(ExecuteOnceObserver(onExecuteOnceNext = {
+                callback.onResult(it.first, null, it.second)
+                initialLoad.postValue(NetworkState.LOADED)
+            }, onExecuteOnceError = {
+                initialLoad.postValue(NetworkState.error(it.message ?: "unknown err"))
+            }))
     }
 
     override fun loadAfter(params: LoadParams<String>, callback: LoadCallback<String, Articles>) {
         initialLoad.postValue(NetworkState.LOADING)
         val boardUrl = params.key
         getSources(boardUrl)
-                .subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.io())
-                .subscribe(ExecuteOnceObserver(onExecuteOnceNext = {
-                    callback.onResult(it.first, it.second)
-                    initialLoad.postValue(NetworkState.LOADED)
-                }, onExecuteOnceError = {
-                    initialLoad.postValue(NetworkState.error(it.message ?: "unknown err"))
-                }))
+            .subscribeOn(Schedulers.io())
+            .observeOn(Schedulers.io())
+            .subscribe(ExecuteOnceObserver(onExecuteOnceNext = {
+                callback.onResult(it.first, it.second)
+                initialLoad.postValue(NetworkState.LOADED)
+            }, onExecuteOnceError = {
+                initialLoad.postValue(NetworkState.error(it.message ?: "unknown err"))
+            }))
     }
 
     override fun loadBefore(params: LoadParams<String>, callback: LoadCallback<String, Articles>) {
@@ -56,15 +59,15 @@ class BoardDataSource(private val boardUrl: String) : PageKeyedDataSource<String
         return Observable.create(ObservableOnSubscribe<Document> {
             try {
                 val cookies = Jsoup.connect(boardUrl)
-                        .method(Connection.Method.GET)
-                        .execute()
-                        .cookies()
+                    .method(Connection.Method.GET)
+                    .execute()
+                    .cookies()
                 cookies["over18"] = "1"
                 val doc = Jsoup.connect(boardUrl)
-                        .data("from", boardUrl.removePrefix(BuildConfig.BASE_URL))
-                        .data("yes", "yes")
-                        .cookies(cookies)
-                        .post()
+                    .data("from", boardUrl.removePrefix(BuildConfig.BASE_URL))
+                    .data("yes", "yes")
+                    .cookies(cookies)
+                    .post()
                 it.onNext(doc)
                 it.onComplete()
             } catch (e: IOException) {
@@ -72,9 +75,10 @@ class BoardDataSource(private val boardUrl: String) : PageKeyedDataSource<String
             }
         }).map {
             val container = it.selectFirst("div .r-list-container")
-                    ?.selectFirst(".action-bar-margin")
-                    ?.selectFirst(".bbs-screen")
-            val prevUrl = BuildConfig.BASE_URL + it.selectFirst("div .action-bar")?.selectFirst(".btn-group-paging")?.select(".btn")?.get(1)?.attr("href")
+                ?.selectFirst(".action-bar-margin")
+                ?.selectFirst(".bbs-screen")
+            val prevUrl = BuildConfig.BASE_URL + it.selectFirst("div .action-bar")
+                ?.selectFirst(".btn-group-paging")?.select(".btn")?.get(1)?.attr("href")
             Pair(mutableListOf<Articles>().apply {
                 var isTopArea = false
                 container?.allElements?.forEach { element ->
@@ -89,7 +93,9 @@ class BoardDataSource(private val boardUrl: String) : PageKeyedDataSource<String
                         val like = element.selectFirst(".nrec")?.text() ?: ""
                         val mark = element.selectFirst(".mark")?.text() ?: ""
                         val date = element.selectFirst(".date")?.text() ?: ""
-                        val url = BuildConfig.BASE_URL + element.selectFirst(".title")?.selectFirst("a")?.attr("href")
+                        val url =
+                            BuildConfig.BASE_URL + element.selectFirst(".title")?.selectFirst("a")
+                                ?.attr("href")
                         /**
                          * If a separation line between a general article and a top article is detected,
                          * then use [PinnedArticles] instead of [GeneralArticles]
