@@ -2,9 +2,9 @@ package com.tonyyang.typtt.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations.map
-import androidx.lifecycle.Transformations.switchMap
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.map
+import androidx.lifecycle.switchMap
 import androidx.paging.PagedList
 import com.tonyyang.typtt.model.Articles
 import com.tonyyang.typtt.repository.BoardRepository
@@ -16,15 +16,11 @@ class BoardViewModel : ViewModel() {
         MutableLiveData<String>()
     }
 
-    private val repoResult = map(articleLiveData) {
-        BoardRepository.postOfArticles(it)
-    }
+    private val repoResult = articleLiveData.map { BoardRepository.postOfArticles(it) }
 
-    val articleListLiveData: LiveData<PagedList<Articles>> = switchMap(repoResult) {
-        it.pagedList
-    }
+    val articleListLiveData: LiveData<PagedList<Articles>> = repoResult.switchMap { it.pagedList }
 
-    val refreshState: LiveData<NetworkState> = switchMap(repoResult) {
+    val refreshState: LiveData<NetworkState> = repoResult.switchMap {
         it.refreshState
     }
 

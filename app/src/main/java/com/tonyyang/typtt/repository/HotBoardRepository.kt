@@ -20,17 +20,17 @@ object HotBoardRepository {
         }
     }).map {
         val container = it.selectFirst("div .b-list-container")
-                .selectFirst(".action-bar-margin")
-                .selectFirst(".bbs-screen")
-        val elements = container.select(".b-ent").select(".board")
+                ?.selectFirst(".action-bar-margin")
+                ?.selectFirst(".bbs-screen")
+        val elements = container?.select(".b-ent")?.select(".board")
         mutableListOf<HotBoard>().apply {
-            if (elements.size > 0) {
-                elements.forEach { element ->
+            if ((elements?.size ?:0) > 0) {
+                elements?.forEach { element ->
                     this.add(HotBoard(
-                            element.selectFirst(".board-name").text(),
-                            element.selectFirst(".board-title").text(),
-                            element.selectFirst(".board-class").text(),
-                            Integer.valueOf(element.selectFirst(".board-nuser").child(0).text()),
+                            element.selectFirst(".board-name")?.text().orEmpty(),
+                            element.selectFirst(".board-title")?.text().orEmpty(),
+                            element.selectFirst(".board-class")?.text().orEmpty(),
+                            element.selectFirst(".board-nuser")?.child(0)?.text()?.toInt() ?: 0,
                             BuildConfig.BASE_URL + element.attr("href")))
                 }
             }

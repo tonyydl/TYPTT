@@ -1,11 +1,11 @@
 package com.tonyyang.typtt.repository
 
-import androidx.lifecycle.Transformations
+import androidx.lifecycle.switchMap
 import androidx.paging.Config
 import androidx.paging.toLiveData
 import com.tonyyang.typtt.model.Articles
 
-const val PER_PAGE_SIZE = 15
+private const val PER_PAGE_SIZE = 15
 
 object BoardRepository {
 
@@ -18,7 +18,7 @@ object BoardRepository {
                         prefetchDistance = 4
                 )
         )
-        val refreshState = Transformations.switchMap(sourceFactory.sourceLiveData) {
+        val refreshState = sourceFactory.sourceLiveData.switchMap {
             it.initialLoad
         }
         return Listing(

@@ -72,12 +72,12 @@ class BoardDataSource(private val boardUrl: String) : PageKeyedDataSource<String
             }
         }).map {
             val container = it.selectFirst("div .r-list-container")
-                    .selectFirst(".action-bar-margin")
-                    .selectFirst(".bbs-screen")
-            val prevUrl = BuildConfig.BASE_URL + it.selectFirst("div .action-bar").selectFirst(".btn-group-paging").select(".btn")[1].attr("href")
+                    ?.selectFirst(".action-bar-margin")
+                    ?.selectFirst(".bbs-screen")
+            val prevUrl = BuildConfig.BASE_URL + it.selectFirst("div .action-bar")?.selectFirst(".btn-group-paging")?.select(".btn")?.get(1)?.attr("href")
             Pair(mutableListOf<Articles>().apply {
                 var isTopArea = false
-                container.allElements.forEach { element ->
+                container?.allElements?.forEach { element ->
                     val className = element.attr("class")
                     if ("r-list-sep" == className) {
                         isTopArea = true

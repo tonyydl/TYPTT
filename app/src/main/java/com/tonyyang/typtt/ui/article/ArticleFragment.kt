@@ -60,8 +60,6 @@ class ArticleFragment : Fragment() {
             cacheMode = WebSettings.LOAD_DEFAULT
             domStorageEnabled = true
             databaseEnabled = true
-            setAppCacheEnabled(true)
-            setAppCachePath(this@ArticleFragment.activity?.getDir("cache", Context.MODE_PRIVATE)?.path)
             javaScriptEnabled = true
         }
         viewModel.cookiesLiveData.observe(viewLifecycleOwner, { cookies ->
