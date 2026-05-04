@@ -23,7 +23,7 @@ object HotBoardRepository {
                 val name = element.selectFirst(".board-name")?.text().orEmpty()
                 val title = element.selectFirst(".board-title")?.text().orEmpty()
                 val classType = element.selectFirst(".board-class")?.text().orEmpty()
-                val nuser = element.selectFirst(".board-nuser")?.child(0)?.text()?.toIntOrNull() ?: 0
+                val nuser = element.selectFirst(".board-nuser")?.text()?.toIntOrNull() ?: 0
                 val href = element.attr("href").let { if (it.isNotEmpty()) BuildConfig.BASE_URL + it else "" }
 
                 if (name.isNotEmpty() && title.isNotEmpty() && classType.isNotEmpty() && href.isNotEmpty()) {
