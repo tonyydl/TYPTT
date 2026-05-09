@@ -1,7 +1,7 @@
-package com.tonyyang.typpt.repository
+package com.tonyyang.typtt.repository
 
-import com.tonyyang.typpt.BuildConfig
-import com.tonyyang.typpt.data.ArticleElement
+import com.tonyyang.typtt.BuildConfig
+import com.tonyyang.typtt.data.ArticleElement
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.jsoup.Connection
