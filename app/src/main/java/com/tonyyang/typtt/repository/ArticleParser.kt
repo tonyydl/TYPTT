@@ -53,7 +53,7 @@ object ArticleParser {
             when {
                 trimmed.startsWith(":") || trimmed.startsWith("：") -> {
                     flushText()
-                    result.add(ArticleElement.QuoteBlock(trimmed))
+                    result.add(ArticleElement.QuoteBlock(trimmed.removePrefix(":").removePrefix("：").trim()))
                 }
                 IMAGE_REGEX.matches(trimmed) -> {
                     flushText()

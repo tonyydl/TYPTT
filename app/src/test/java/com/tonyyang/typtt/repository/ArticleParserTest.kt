@@ -25,6 +25,7 @@ class ArticleParserTest {
         assertEquals("testuser (Test)", header.author)
         assertEquals("[問卦] Test Title", header.title)
         assertEquals("Gossiping", header.board)
+        // PTT uses double-space before single-digit days; Jsoup .text() normalises to single space
         assertEquals("Fri May 9 12:00:00 2025", header.date)
     }
 
@@ -37,7 +38,8 @@ class ArticleParserTest {
     @Test
     fun `parse line starting with colon becomes QuoteBlock`() {
         val elements = ArticleParser.parse(html(": This is a quote"))
-        assertTrue(elements.any { it is ArticleElement.QuoteBlock })
+        val quote = elements.filterIsInstance<ArticleElement.QuoteBlock>().first()
+        assertEquals("This is a quote", quote.text)
     }
 
     @Test
