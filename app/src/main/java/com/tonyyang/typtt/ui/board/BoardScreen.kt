@@ -19,6 +19,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.itemKey
 import com.tonyyang.typtt.data.Articles
 import com.tonyyang.typtt.ui.theme.Background
 import com.tonyyang.typtt.ui.theme.Primary
@@ -57,7 +58,10 @@ fun BoardScreen(
             .nestedScroll(pullToRefreshState.nestedScrollConnection)
     ) {
         LazyColumn(modifier = Modifier.fillMaxSize()) {
-            items(articleItems.itemCount) { index ->
+            items(
+                count = articleItems.itemCount,
+                key = articleItems.itemKey { it.url.ifEmpty { it.title } }
+            ) { index ->
                 articleItems[index]?.let { article ->
                     BoardItem(articles = article, onItemClick = onItemClick)
                     HorizontalDivider(color = Surface, thickness = 0.5.dp)
