@@ -83,6 +83,7 @@ dependencies {
     androidTestImplementation(libs.androidx.test.espresso.core)
     implementation(libs.kotlin)
     implementation(libs.timber)
+    implementation(libs.coil.compose)
     ksp(libs.hilt.android.compiler)
     implementation(libs.hilt.android)
 }
