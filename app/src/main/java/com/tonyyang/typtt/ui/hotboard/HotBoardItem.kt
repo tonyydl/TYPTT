@@ -27,6 +27,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tonyyang.typtt.R
 import com.tonyyang.typtt.data.HotBoard
+import com.tonyyang.typtt.ui.theme.Background
+import com.tonyyang.typtt.ui.theme.Primary
+import com.tonyyang.typtt.ui.theme.Surface
+import com.tonyyang.typtt.ui.theme.TextPrimary
 
 @Composable
 fun HotBoardItem(
@@ -37,7 +41,7 @@ fun HotBoardItem(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .background(Color(0xFF222831))
+            .background(Background)
             .clickable { onItemClick(hotBoard) }
             .padding(vertical = 8.dp),
         verticalAlignment = Alignment.CenterVertically
@@ -55,14 +59,14 @@ fun HotBoardItem(
         ) {
             Text(
                 text = hotBoard.name,
-                color = Color(0xFF00ADB5),
+                color = Primary,
                 fontSize = 20.sp,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )
             Text(
                 text = hotBoard.title,
-                color = Color(0xFF00ADB5),
+                color = Primary,
                 fontSize = 16.sp,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
@@ -89,7 +93,7 @@ private fun CategoryLabel(category: String, modifier: Modifier = Modifier) {
     if (isLatin) {
         Text(
             text = category,
-            color = Color(0xFFEEEEEE),
+            color = TextPrimary,
             fontSize = 18.sp,
             fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Center,
@@ -113,7 +117,7 @@ private fun CategoryLabel(category: String, modifier: Modifier = Modifier) {
             category.forEach { char ->
                 Text(
                     text = char.toString(),
-                    color = Color(0xFFEEEEEE),
+                    color = TextPrimary,
                     fontSize = 21.5.sp,
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Center
@@ -146,7 +150,7 @@ fun HotBoardPopularity(
             popularity in minNumber until maxNumber -> {
                 Text(
                     text = popularity.toString(),
-                    color = Color(0xFF393E46),
+                    color = Surface,
                     fontSize = 16.sp,
                     textAlign = TextAlign.Center
                 )

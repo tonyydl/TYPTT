@@ -11,11 +11,13 @@ import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tonyyang.typtt.data.HotBoard
+import com.tonyyang.typtt.ui.theme.Background
+import com.tonyyang.typtt.ui.theme.Primary
+import com.tonyyang.typtt.ui.theme.Surface
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -44,24 +46,24 @@ fun HotBoardScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFF222831))
+            .background(Background)
             .nestedScroll(pullToRefreshState.nestedScrollConnection)
     ) {
         LazyColumn(modifier = Modifier.fillMaxSize()) {
-            items(uiState.boards) { hotBoard ->
+            items(uiState.boards, key = { it.name }) { hotBoard ->
                 HotBoardItem(
                     hotBoard = hotBoard,
                     onItemClick = onItemClick
                 )
-                HorizontalDivider(color = Color(0xFF393E46), thickness = 0.5.dp)
+                HorizontalDivider(color = Surface, thickness = 0.5.dp)
             }
         }
 
         PullToRefreshContainer(
             state = pullToRefreshState,
             modifier = Modifier.align(Alignment.TopCenter),
-            containerColor = Color(0xFF393E46),
-            contentColor = Color(0xFF00ADB5)
+            containerColor = Surface,
+            contentColor = Primary
         )
     }
 }
