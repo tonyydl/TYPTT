@@ -77,8 +77,6 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.compose.material.icons.core)
     implementation(libs.hilt.navigation.compose)
-    implementation(libs.rxandroid)
-    implementation(libs.rxjava)
     implementation(libs.jsoup)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.runner)
