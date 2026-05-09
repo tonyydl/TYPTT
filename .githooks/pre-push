@@ -1,0 +1,19 @@
+#!/bin/bash
+
+BRANCH=$(git rev-parse --abbrev-ref HEAD)
+[ "$BRANCH" = "main" ] && exit 0
+
+KOTLIN_CHANGES=$(git diff main...HEAD --name-only 2>/dev/null | grep '\.kt$' | wc -l | tr -d ' ')
+[ "$KOTLIN_CHANGES" -eq 0 ] && exit 0
+
+CLAUDE_CHANGES=$(git diff main...HEAD --name-only 2>/dev/null | grep 'CLAUDE\.md' | wc -l | tr -d ' ')
+[ "$CLAUDE_CHANGES" -gt 0 ] && exit 0
+
+echo ""
+echo "⚠️  CLAUDE.md 尚未更新！"
+echo "   本分支有 ${KOTLIN_CHANGES} 個 Kotlin 檔案改動，但 CLAUDE.md 未變動。"
+echo "   請更新 CLAUDE.md 後再 push，或確認此次改動不影響架構文件。"
+echo ""
+echo "   略過此檢查：git push --no-verify"
+echo ""
+exit 1
