@@ -7,3 +7,4 @@
 /captures
 .externalNativeBuild
 .claude/settings.local.json
+.superpowers/
