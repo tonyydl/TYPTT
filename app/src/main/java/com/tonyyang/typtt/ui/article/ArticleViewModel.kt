@@ -2,6 +2,7 @@ package com.tonyyang.typtt.ui.article
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.tonyyang.typtt.data.ArticleElement
 import com.tonyyang.typtt.repository.ArticleRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,7 +14,7 @@ import timber.log.Timber
 import javax.inject.Inject
 
 data class ArticleUiState(
-    val cookies: Map<String, String> = emptyMap(),
+    val elements: List<ArticleElement> = emptyList(),
     val isLoading: Boolean = false,
     val errorMessage: String? = null
 )
@@ -24,15 +25,15 @@ class ArticleViewModel @Inject constructor() : ViewModel() {
     private val _uiState = MutableStateFlow(ArticleUiState())
     val uiState: StateFlow<ArticleUiState> = _uiState.asStateFlow()
 
-    fun loadCookies(articleUrl: String) {
+    fun loadArticle(articleUrl: String) {
         _uiState.update { it.copy(isLoading = true, errorMessage = null) }
         viewModelScope.launch {
-            runCatching { ArticleRepository.getArticleCookies(articleUrl) }
-                .onSuccess { cookies ->
-                    _uiState.update { it.copy(cookies = cookies, isLoading = false) }
+            runCatching { ArticleRepository.getArticleContent(articleUrl) }
+                .onSuccess { elements ->
+                    _uiState.update { it.copy(elements = elements, isLoading = false) }
                 }
                 .onFailure { e ->
-                    Timber.e(e, "Failed to load cookies for $articleUrl")
+                    Timber.e(e, "Failed to load article $articleUrl")
                     _uiState.update { it.copy(isLoading = false, errorMessage = e.message) }
                 }
         }
