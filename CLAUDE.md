@@ -6,6 +6,16 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 TYPTT is an Android app for browsing PTT (a Taiwanese BBS). It scrapes PTT's HTML directly using Jsoup — there is no REST API. The app is fully Jetpack Compose with no XML layouts or Fragments.
 
+## Setup
+
+After cloning, enable the shared git hooks:
+
+```bash
+git config core.hooksPath .githooks
+```
+
+This activates a `pre-push` hook that reminds you to update `CLAUDE.md` when Kotlin files changed but the documentation was not updated.
+
 ## Build Commands
 
 ```bash
