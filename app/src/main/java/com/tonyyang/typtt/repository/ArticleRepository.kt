@@ -1,23 +1,18 @@
 package com.tonyyang.typtt.repository
 
-import io.reactivex.rxjava3.core.Observable
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import org.jsoup.Connection
 import org.jsoup.Jsoup
-import java.io.IOException
 
 object ArticleRepository {
 
-    fun getArticleCookies(articleUrl: String) = Observable.create {
-        try {
-            val cookies = Jsoup.connect(articleUrl)
+    suspend fun getArticleCookies(articleUrl: String): Map<String, String> =
+        withContext(Dispatchers.IO) {
+            Jsoup.connect(articleUrl)
                 .method(Connection.Method.GET)
                 .execute()
                 .cookies()
-            cookies["over18"] = "1"
-            it.onNext(cookies)
-            it.onComplete()
-        } catch (e: IOException) {
-            e.printStackTrace()
+                .apply { this["over18"] = "1" }
         }
-    }
 }

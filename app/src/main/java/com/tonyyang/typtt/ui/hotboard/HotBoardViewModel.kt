@@ -1,41 +1,38 @@
 package com.tonyyang.typtt.ui.hotboard
 
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.tonyyang.typtt.addTo
+import androidx.lifecycle.viewModelScope
 import com.tonyyang.typtt.data.HotBoard
 import com.tonyyang.typtt.repository.HotBoardRepository
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.disposables.CompositeDisposable
-import io.reactivex.rxjava3.schedulers.Schedulers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
+import timber.log.Timber
+
+data class HotBoardUiState(
+    val boards: List<HotBoard> = emptyList(),
+    val isRefreshing: Boolean = false,
+    val errorMessage: String? = null
+)
 
 class HotBoardViewModel : ViewModel() {
 
-    private val compositeDisposable by lazy {
-        CompositeDisposable()
-    }
-
-    val hotBoardListLiveData by lazy {
-        MutableLiveData<List<HotBoard>>()
-    }
-
-    val isRefreshLiveData by lazy {
-        MutableLiveData<Boolean>()
-    }
+    private val _uiState = MutableStateFlow(HotBoardUiState())
+    val uiState: StateFlow<HotBoardUiState> = _uiState.asStateFlow()
 
     fun loadData() {
-        isRefreshLiveData.postValue(true)
-        HotBoardRepository.getHotBoards()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe {
-                hotBoardListLiveData.value = it
-                isRefreshLiveData.value = false
-            }.addTo(compositeDisposable)
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        compositeDisposable.dispose()
+        _uiState.update { it.copy(isRefreshing = true, errorMessage = null) }
+        viewModelScope.launch {
+            runCatching { HotBoardRepository.getHotBoards() }
+                .onSuccess { boards ->
+                    _uiState.update { it.copy(boards = boards, isRefreshing = false) }
+                }
+                .onFailure { e ->
+                    Timber.e(e, "Failed to load hot boards")
+                    _uiState.update { it.copy(isRefreshing = false, errorMessage = e.message) }
+                }
+        }
     }
 }

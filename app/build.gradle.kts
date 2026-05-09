@@ -1,7 +1,6 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.org.jetbrains.kotlin.android)
-    id("androidx.navigation.safeargs.kotlin")
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
 }
@@ -47,8 +46,11 @@ android {
         jvmTarget = "1.8"
     }
     buildFeatures {
-        viewBinding = true
         buildConfig = true
+        compose = true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.8"
     }
     packaging {
         resources {
@@ -58,15 +60,23 @@ android {
 }
 
 dependencies {
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.compose.ui)
+    implementation(libs.androidx.compose.ui.graphics)
+    implementation(libs.androidx.compose.ui.tooling.preview)
+    implementation(libs.androidx.compose.material3)
+    implementation(libs.androidx.activity.compose)
+    implementation(libs.androidx.lifecycle.runtime.compose)
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    implementation(libs.kotlinx.coroutines.android)
+    debugImplementation(libs.androidx.compose.ui.tooling)
+
     implementation(libs.androidx.appcompat)
-    implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.paging.runtime.ktx)
-    implementation(libs.androidx.navigation.fragment.ktx)
-    implementation(libs.androidx.navigation.ui.ktx)
-    implementation(libs.androidx.swiperefreshlayout)
-    implementation(libs.material)
-    implementation(libs.rxandroid)
-    implementation(libs.rxjava)
+    implementation(libs.androidx.paging.compose)
+    implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.compose.material.icons.core)
+    implementation(libs.hilt.navigation.compose)
     implementation(libs.jsoup)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.runner)

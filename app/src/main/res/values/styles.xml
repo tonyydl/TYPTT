@@ -5,37 +5,4 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowBackground">@color/bg_color</item>
     </style>
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
-    <style name="BoardItem" />
-    <style name="BoardItem.Text">
-        <item name="android:textColor">@color/board_item_text_color</item>
-    </style>
-    <style name="BoardItem.Text.Category">
-        <item name="android:textColor">@color/board_item_category_text_color</item>
-        <item name="android:textSize">@dimen/board_item_category_size</item>
-        <item name="android:textStyle">bold</item>
-    </style>
-    <style name="BoardItem.Text.Name">
-        <item name="android:textSize">@dimen/board_item_name_size</item>
-    </style>
-    <style name="BoardItem.Text.Title">
-        <item name="android:textSize">@dimen/board_item_title_size</item>
-    </style>
-    <style name="BoardItem.Text.Pinned">
-        <item name="android:textSize">@dimen/board_item_pinned_size</item>
-    </style>
-    <style name="BoardItem.Text.Author">
-        <item name="android:textSize">@dimen/board_item_author_size</item>
-    </style>
-    <style name="BoardItem.Text.Mark">
-        <item name="android:textSize">@dimen/board_item_date_size</item>
-    </style>
-    <style name="BoardItem.Text.Date">
-        <item name="android:textSize">@dimen/board_item_date_size</item>
-    </style>
-    <style name="BoardItem.Text.Popularity">
-        <item name="android:textColor">@color/board_item_popularity_text_color</item>
-        <item name="android:textSize">@dimen/board_item_title_size</item>
-    </style>
 </resources>
