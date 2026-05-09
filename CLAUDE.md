@@ -16,6 +16,10 @@ git config core.hooksPath .githooks
 
 This activates a `pre-push` hook that blocks push when Kotlin files changed but `CLAUDE.md` was not updated.
 
+## Git Commit Policy
+
+**Never commit automatically.** Only commit when the user explicitly asks (e.g., "commit", "幫我 commit"). After completing a task, present the changes and wait for instruction.
+
 ## Build Commands
 
 ```bash
