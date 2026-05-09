@@ -7,24 +7,32 @@ import com.tonyyang.typtt.repository.HotBoardRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
+data class HotBoardUiState(
+    val boards: List<HotBoard> = emptyList(),
+    val isRefreshing: Boolean = false,
+    val errorMessage: String? = null
+)
+
 class HotBoardViewModel : ViewModel() {
 
-    private val _hotBoardList = MutableStateFlow<List<HotBoard>>(emptyList())
-    val hotBoardList: StateFlow<List<HotBoard>> = _hotBoardList.asStateFlow()
-
-    private val _isRefreshing = MutableStateFlow(false)
-    val isRefreshing: StateFlow<Boolean> = _isRefreshing.asStateFlow()
+    private val _uiState = MutableStateFlow(HotBoardUiState())
+    val uiState: StateFlow<HotBoardUiState> = _uiState.asStateFlow()
 
     fun loadData() {
+        _uiState.update { it.copy(isRefreshing = true, errorMessage = null) }
         viewModelScope.launch {
-            _isRefreshing.value = true
             runCatching { HotBoardRepository.getHotBoards() }
-                .onSuccess { _hotBoardList.value = it }
-                .onFailure { Timber.e(it, "Failed to load hot boards") }
-            _isRefreshing.value = false
+                .onSuccess { boards ->
+                    _uiState.update { it.copy(boards = boards, isRefreshing = false) }
+                }
+                .onFailure { e ->
+                    Timber.e(e, "Failed to load hot boards")
+                    _uiState.update { it.copy(isRefreshing = false, errorMessage = e.message) }
+                }
         }
     }
 }

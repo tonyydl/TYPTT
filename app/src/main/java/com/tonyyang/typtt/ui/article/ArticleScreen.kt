@@ -20,7 +20,7 @@ fun ArticleScreen(
     articleUrl: String,
     modifier: Modifier = Modifier
 ) {
-    val cookies by viewModel.cookies.collectAsStateWithLifecycle()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     LaunchedEffect(articleUrl) {
         viewModel.loadCookies(articleUrl)
@@ -40,12 +40,11 @@ fun ArticleScreen(
             }
         },
         update = { webView ->
-            // Load URL exactly once: when cookies arrive and page hasn't started loading yet
-            if (cookies.isNotEmpty() && webView.url == null) {
+            if (uiState.cookies.isNotEmpty() && webView.url == null) {
                 val cookieManager = CookieManager.getInstance()
                 cookieManager.setAcceptCookie(true)
                 cookieManager.removeAllCookies(null)
-                for ((key, value) in cookies) {
+                for ((key, value) in uiState.cookies) {
                     cookieManager.setCookie(BuildConfig.DOMAIN, "$key=$value")
                 }
                 webView.loadUrl(

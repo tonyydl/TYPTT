@@ -23,24 +23,20 @@ fun HotBoardScreen(
     viewModel: HotBoardViewModel,
     onItemClick: (HotBoard) -> Unit
 ) {
-    val hotBoardList by viewModel.hotBoardList.collectAsStateWithLifecycle()
-    val isRefreshing by viewModel.isRefreshing.collectAsStateWithLifecycle()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val pullToRefreshState = rememberPullToRefreshState()
 
     LaunchedEffect(Unit) {
         viewModel.loadData()
     }
 
-    LaunchedEffect(isRefreshing) {
-        if (isRefreshing) {
-            pullToRefreshState.startRefresh()
-        } else {
-            pullToRefreshState.endRefresh()
-        }
+    LaunchedEffect(uiState.isRefreshing) {
+        if (uiState.isRefreshing) pullToRefreshState.startRefresh()
+        else pullToRefreshState.endRefresh()
     }
 
     LaunchedEffect(pullToRefreshState.isRefreshing) {
-        if (pullToRefreshState.isRefreshing && !isRefreshing) {
+        if (pullToRefreshState.isRefreshing && !uiState.isRefreshing) {
             viewModel.loadData()
         }
     }
@@ -52,7 +48,7 @@ fun HotBoardScreen(
             .nestedScroll(pullToRefreshState.nestedScrollConnection)
     ) {
         LazyColumn(modifier = Modifier.fillMaxSize()) {
-            items(hotBoardList) { hotBoard ->
+            items(uiState.boards) { hotBoard ->
                 HotBoardItem(
                     hotBoard = hotBoard,
                     onItemClick = onItemClick
