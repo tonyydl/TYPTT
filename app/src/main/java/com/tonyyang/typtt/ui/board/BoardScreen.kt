@@ -15,12 +15,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.itemKey
 import com.tonyyang.typtt.data.Articles
+import com.tonyyang.typtt.ui.theme.Background
+import com.tonyyang.typtt.ui.theme.Primary
+import com.tonyyang.typtt.ui.theme.Surface
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -51,14 +54,17 @@ fun BoardScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFF222831))
+            .background(Background)
             .nestedScroll(pullToRefreshState.nestedScrollConnection)
     ) {
         LazyColumn(modifier = Modifier.fillMaxSize()) {
-            items(articleItems.itemCount) { index ->
+            items(
+                count = articleItems.itemCount,
+                key = articleItems.itemKey { it.url.ifEmpty { it.title } }
+            ) { index ->
                 articleItems[index]?.let { article ->
                     BoardItem(articles = article, onItemClick = onItemClick)
-                    HorizontalDivider(color = Color(0xFF393E46), thickness = 0.5.dp)
+                    HorizontalDivider(color = Surface, thickness = 0.5.dp)
                 }
             }
 
@@ -70,7 +76,7 @@ fun BoardScreen(
                             .padding(16.dp),
                         contentAlignment = Alignment.Center
                     ) {
-                        CircularProgressIndicator(color = Color(0xFF00ADB5))
+                        CircularProgressIndicator(color = Primary)
                     }
                 }
             }
@@ -79,8 +85,8 @@ fun BoardScreen(
         PullToRefreshContainer(
             state = pullToRefreshState,
             modifier = Modifier.align(Alignment.TopCenter),
-            containerColor = Color(0xFF393E46),
-            contentColor = Color(0xFF00ADB5)
+            containerColor = Surface,
+            contentColor = Primary
         )
     }
 }

@@ -14,13 +14,17 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.graphics.Color
 import com.tonyyang.typtt.data.Articles
 import com.tonyyang.typtt.data.Type
+import com.tonyyang.typtt.ui.theme.Background
+import com.tonyyang.typtt.ui.theme.Pinned
+import com.tonyyang.typtt.ui.theme.TextPrimary
+import com.tonyyang.typtt.ui.theme.TextSecondary
 
 private fun likeColor(like: String): Color {
     val count = like.toIntOrNull() ?: 0
@@ -41,7 +45,7 @@ fun BoardItem(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .background(Color(0xFF222831))
+            .background(Background)
             .clickable { onItemClick(articles) }
             .padding(horizontal = 16.dp, vertical = 8.dp),
         verticalAlignment = Alignment.Top
@@ -58,14 +62,14 @@ fun BoardItem(
                 if (articles.type == Type.PINNED_ARTICLES) {
                     Text(
                         text = "★",
-                        color = Color(0xFFFFEB3B),
+                        color = Pinned,
                         fontSize = 12.sp,
                         modifier = Modifier.padding(end = 4.dp)
                     )
                 }
                 Text(
                     text = articles.title,
-                    color = Color(0xFFEEEEEE),
+                    color = TextPrimary,
                     fontSize = 16.sp,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis
@@ -78,7 +82,7 @@ fun BoardItem(
             ) {
                 Text(
                     text = articles.author,
-                    color = Color(0xFF9E9E9E),
+                    color = TextSecondary,
                     fontSize = 12.sp,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
@@ -86,7 +90,7 @@ fun BoardItem(
                 )
                 Text(
                     text = articles.date,
-                    color = Color(0xFF9E9E9E),
+                    color = TextSecondary,
                     fontSize = 12.sp
                 )
             }

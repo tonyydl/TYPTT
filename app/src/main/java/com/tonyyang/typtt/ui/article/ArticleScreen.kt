@@ -9,9 +9,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tonyyang.typtt.BuildConfig
+import com.tonyyang.typtt.ui.theme.Background
 
 @SuppressLint("SetJavaScriptEnabled")
 @Composable
@@ -30,7 +32,7 @@ fun ArticleScreen(
         factory = { context ->
             WebView(context).apply {
                 webViewClient = WebViewClient()
-                setBackgroundColor(0xFF222831.toInt())
+                setBackgroundColor(Background.toArgb())
                 settings.apply {
                     cacheMode = WebSettings.LOAD_DEFAULT
                     domStorageEnabled = true
