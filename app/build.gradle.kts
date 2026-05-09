@@ -1,7 +1,6 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.org.jetbrains.kotlin.android)
-    id("androidx.navigation.safeargs.kotlin")
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
 }
@@ -78,8 +77,9 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.paging.runtime.ktx)
     implementation(libs.androidx.paging.compose)
-    implementation(libs.androidx.navigation.fragment.ktx)
-    implementation(libs.androidx.navigation.ui.ktx)
+    implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.compose.material.icons.core)
+    implementation(libs.hilt.navigation.compose)
     implementation(libs.androidx.swiperefreshlayout)
     implementation(libs.material)
     implementation(libs.rxandroid)

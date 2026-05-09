@@ -27,6 +27,10 @@ fun HotBoardScreen(
     val isRefreshing by viewModel.isRefreshing.collectAsStateWithLifecycle()
     val pullToRefreshState = rememberPullToRefreshState()
 
+    LaunchedEffect(Unit) {
+        viewModel.loadData()
+    }
+
     LaunchedEffect(isRefreshing) {
         if (isRefreshing) {
             pullToRefreshState.startRefresh()
