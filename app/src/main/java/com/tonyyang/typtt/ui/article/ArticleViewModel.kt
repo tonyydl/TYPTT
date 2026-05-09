@@ -1,32 +1,27 @@
 package com.tonyyang.typtt.ui.article
 
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.tonyyang.typtt.addTo
+import androidx.lifecycle.viewModelScope
 import com.tonyyang.typtt.repository.ArticleRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.disposables.CompositeDisposable
-import io.reactivex.rxjava3.schedulers.Schedulers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
 class ArticleViewModel @Inject constructor() : ViewModel() {
 
-    private val compositeDisposable by lazy {
-        CompositeDisposable()
-    }
-
-    val cookiesLiveData by lazy {
-        MutableLiveData<Map<String, String>>()
-    }
+    private val _cookies = MutableStateFlow<Map<String, String>>(emptyMap())
+    val cookies: StateFlow<Map<String, String>> = _cookies.asStateFlow()
 
     fun loadCookies(articleUrl: String) {
-        ArticleRepository.getArticleCookies(articleUrl)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe {
-                cookiesLiveData.value = it
-            }.addTo(compositeDisposable)
+        viewModelScope.launch {
+            runCatching { ArticleRepository.getArticleCookies(articleUrl) }
+                .onSuccess { _cookies.value = it }
+                .onFailure { Timber.e(it, "Failed to load cookies for $articleUrl") }
+        }
     }
 }

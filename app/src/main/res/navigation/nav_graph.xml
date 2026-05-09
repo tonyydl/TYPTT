@@ -7,8 +7,7 @@
 
     <fragment
         android:id="@+id/hotBoardFragment"
-        android:name="com.tonyyang.typtt.ui.hotboard.HotBoardFragment"
-        tools:layout="@layout/fragment_hotboard">
+        android:name="com.tonyyang.typtt.ui.hotboard.HotBoardFragment">
         <action
             android:id="@+id/action_hotBoardFragment_to_boardFragment"
             app:destination="@id/boardFragment"
@@ -19,8 +18,7 @@
     </fragment>
     <fragment
         android:id="@+id/boardFragment"
-        android:name="com.tonyyang.typtt.ui.board.BoardFragment"
-        tools:layout="@layout/fragment_board">
+        android:name="com.tonyyang.typtt.ui.board.BoardFragment">
         <argument
             android:name="name"
             android:defaultValue="null"
@@ -43,8 +41,7 @@
     </fragment>
     <fragment
         android:id="@+id/articleFragment"
-        android:name="com.tonyyang.typtt.ui.article.ArticleFragment"
-        tools:layout="@layout/fragment_article">
+        android:name="com.tonyyang.typtt.ui.article.ArticleFragment">
         <argument
             android:name="article_title"
             android:defaultValue="null"
