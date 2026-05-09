@@ -7,18 +7,16 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tonyyang.typtt.data.ArticleElement
 import com.tonyyang.typtt.data.PushType
+import com.tonyyang.typtt.ui.theme.BooRed
+import com.tonyyang.typtt.ui.theme.NeutralGray
+import com.tonyyang.typtt.ui.theme.PushBlue
 import com.tonyyang.typtt.ui.theme.TextPrimary
 import com.tonyyang.typtt.ui.theme.TextSecondary
-
-private val PushBlue = Color(0xFF4A9EFF)
-private val BooRed = Color(0xFFFF4444)
-private val NeutralGray = Color(0xFF888888)
 
 @Composable
 fun ArticlePushItem(push: ArticleElement.Push, modifier: Modifier = Modifier) {

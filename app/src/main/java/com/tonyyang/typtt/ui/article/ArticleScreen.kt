@@ -1,6 +1,7 @@
 package com.tonyyang.typtt.ui.article
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -44,8 +45,14 @@ fun ArticleScreen(
         uiState.errorMessage != null -> Box(
             modifier = modifier.fillMaxSize().wrapContentSize(Alignment.Center)
         ) {
-            Button(onClick = { viewModel.loadArticle(articleUrl) }) {
-                Text("重試")
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                Text(text = uiState.errorMessage ?: "", color = TextSecondary)
+                Button(
+                    onClick = { viewModel.loadArticle(articleUrl) },
+                    modifier = Modifier.padding(top = 8.dp)
+                ) {
+                    Text("重試")
+                }
             }
         }
 
