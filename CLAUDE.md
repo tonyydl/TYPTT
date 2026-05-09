@@ -6,6 +6,20 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 TYPTT is an Android app for browsing PTT (a Taiwanese BBS). It scrapes PTT's HTML directly using Jsoup — there is no REST API. The app is fully Jetpack Compose with no XML layouts or Fragments.
 
+## Setup
+
+The `.claude/settings.json` `SessionStart` hook automatically runs `git config core.hooksPath .githooks` when opening this project in Claude Code. If working outside Claude Code, run it manually:
+
+```bash
+git config core.hooksPath .githooks
+```
+
+This activates a `pre-push` hook that blocks push when Kotlin files changed but `CLAUDE.md` was not updated.
+
+## Git Commit Policy
+
+**Never commit automatically.** Only commit when the user explicitly asks (e.g., "commit", "幫我 commit"). After completing a task, present the changes and wait for instruction.
+
 ## Build Commands
 
 ```bash
@@ -30,7 +44,7 @@ These are injected as `BuildConfig.DOMAIN` and `BuildConfig.BASE_URL`.
 
 **Single Activity → Scaffold → NavHost → 3 Screens**
 
-`MainActivity` sets up a `Scaffold` with a `TopAppBar` (title/back-button state derived from the current `NavBackStackEntry`), then delegates to `AppNavHost`.
+`MainActivity` extends `ComponentActivity` (not `AppCompatActivity` — no Fragments or XML). It wraps the entire UI in `TypttTheme`, sets up a `Scaffold` with a `TopAppBar` (title/back-button state derived from the current `NavBackStackEntry`), then delegates to `AppNavHost`.
 
 ### Navigation
 
@@ -71,6 +85,12 @@ All repositories are `object` singletons (not Hilt-injected). They perform block
 ### Article WebView
 
 `ArticleScreen` uses `AndroidView { WebView }` since Compose has no native WebView. The `update` lambda guards with `webView.url == null` to load the URL exactly once (prevents reload on recomposition).
+
+### Theming
+
+All app colors are defined as named constants in `ui/theme/Color.kt` (`Background`, `Surface`, `Primary`, `TopBarColor`, `TextPrimary`, `TextSecondary`, `Pinned`). Never use raw `Color(0xFF...)` literals outside this file.
+
+`TypttTheme` in `ui/theme/Theme.kt` wraps `MaterialTheme` with a `darkColorScheme` built from these constants. All screens are wrapped in `TypttTheme` at the `MainActivity` level.
 
 ### HotBoard Category Label
 
