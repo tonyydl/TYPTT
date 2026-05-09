@@ -72,7 +72,8 @@ All repositories are `object` singletons (not Hilt-injected). They perform block
 
 - `HotBoardRepository` — scrapes `/bbs/hotboards.html`, parses board list
 - `BoardRepository` — wraps `BoardPagingSource` in a `Pager`; each page = one PTT board page (~20 articles). PTT's most-recent board page may be partially filled, so `initialLoadSize = PAGE_SIZE` is set explicitly to avoid Paging 3 auto-appending.
-- `ArticleRepository` — fetches cookies with over-18 confirmation, returns `Map<String, String>`
+- `ArticleRepository` — fetches article HTML (GET then POST with `over18=1` cookie), delegates to `ArticleParser.parse()`, returns `List<ArticleElement>`
+- `ArticleParser` — Jsoup-based parser; strips header metalines and push nodes, walks body line-by-line to produce a typed `ArticleElement` list (image URLs matched by regex, quote lines by `:` prefix, dividers by repeated dash chars)
 
 **Pagination key** = the URL of the previous PTT page (older articles). Scrolling down loads older content.
 
@@ -82,13 +83,22 @@ All repositories are `object` singletons (not Hilt-injected). They perform block
 - Deleted articles still appear as `r-ent` elements with no `.title a` link — their URL becomes `BASE_URL + ""`. These are included in lists as-is.
 - `isTopArea` flag flips to `true` after `r-list-sep` element, marking subsequent articles as `Type.PINNED_ARTICLES`
 
-### Article WebView
+### Article Renderer
 
-`ArticleScreen` uses `AndroidView { WebView }` since Compose has no native WebView. The `update` lambda guards with `webView.url == null` to load the URL exactly once (prevents reload on recomposition).
+`ArticleScreen` is a native Compose screen — no WebView. It follows the standard screen pattern (`ArticleUiState` / `ArticleViewModel` / `collectAsStateWithLifecycle`). Content is rendered as a `LazyColumn` of typed composables:
+
+| `ArticleElement` type | Composable |
+|---|---|
+| `Header` | `ArticleHeaderItem` — author, title, board, date |
+| `TextBlock` | `ArticleTextItem` |
+| `QuoteBlock` | `ArticleQuoteItem` — indented with left border |
+| `ImageBlock` | `ArticleImageItem` — async image load |
+| `Divider` | `HorizontalDivider` inline |
+| `Push` | `ArticlePushItem` — colored by `PushType` (PUSH/BOO/NEUTRAL) |
 
 ### Theming
 
-All app colors are defined as named constants in `ui/theme/Color.kt` (`Background`, `Surface`, `Primary`, `TopBarColor`, `TextPrimary`, `TextSecondary`, `Pinned`). Never use raw `Color(0xFF...)` literals outside this file.
+All app colors are defined as named constants in `ui/theme/Color.kt` (`Background`, `Surface`, `Primary`, `TopBarColor`, `TextPrimary`, `TextSecondary`, `Pinned`, `PushBlue`, `BooRed`, `NeutralGray`). Never use raw `Color(0xFF...)` literals outside this file.
 
 `TypttTheme` in `ui/theme/Theme.kt` wraps `MaterialTheme` with a `darkColorScheme` built from these constants. All screens are wrapped in `TypttTheme` at the `MainActivity` level.
 
