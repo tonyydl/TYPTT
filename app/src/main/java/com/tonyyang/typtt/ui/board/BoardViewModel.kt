@@ -7,6 +7,7 @@ import androidx.paging.cachedIn
 import com.tonyyang.typtt.data.Articles
 import com.tonyyang.typtt.repository.BoardRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.filterNotNull
@@ -14,6 +15,7 @@ import kotlinx.coroutines.flow.flatMapLatest
 import javax.inject.Inject
 
 @HiltViewModel
+@OptIn(ExperimentalCoroutinesApi::class)
 class BoardViewModel @Inject constructor() : ViewModel() {
 
     private val boardUrl = MutableStateFlow<String?>(null)
