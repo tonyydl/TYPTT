@@ -66,6 +66,10 @@ Each screen follows the same structure:
 
 **Exception — Board:** Uses Paging 3's `LazyPagingItems.loadState` for loading/error state instead of a custom `UiState`; `BoardViewModel` exposes `Flow<PagingData<Articles>>` directly.
 
+**Pull-to-Refresh:** Both `HotBoardScreen` and `BoardScreen` use `PullToRefreshBox` (M3 1.3.x). Pass `isRefreshing` and `onRefresh` directly — no manual state sync needed. Do NOT use the old `PullToRefreshContainer` / `rememberPullToRefreshState` API (removed in M3 1.3.x).
+
+**Error state pattern:** When initial load fails and the list is empty, show an error message + retry button centered on screen (see `HotBoardScreen` and `ArticleScreen`). When data is already loaded and a refresh fails, keep displaying existing data.
+
 ### Data Layer
 
 All repositories are `object` singletons (not Hilt-injected). They perform blocking Jsoup HTTP calls inside `withContext(Dispatchers.IO)`.
@@ -92,7 +96,7 @@ All repositories are `object` singletons (not Hilt-injected). They perform block
 | `Header` | `ArticleHeaderItem` — author, title, board, date |
 | `TextBlock` | `ArticleTextItem` |
 | `QuoteBlock` | `ArticleQuoteItem` — indented with left border |
-| `ImageBlock` | `ArticleImageItem` — async image load |
+| `ImageBlock` | `ArticleImageItem` — `SubcomposeAsyncImage` with spinner (loading) and error label |
 | `Divider` | `HorizontalDivider` inline |
 | `Push` | `ArticlePushItem` — colored by `PushType` (PUSH/BOO/NEUTRAL) |
 
@@ -110,10 +114,17 @@ All app colors are defined as named constants in `ui/theme/Color.kt` (`Backgroun
 
 | Layer | Library |
 |---|---|
-| UI | Jetpack Compose + Material 3 |
+| UI | Jetpack Compose + Material 3 (1.3.x) |
 | Navigation | `navigation-compose` (no SafeArgs) |
 | DI | Hilt (`@HiltViewModel`, `hiltViewModel()`) |
 | Async | Coroutines + Flow (`viewModelScope`, `withContext`) |
 | Paging | Paging 3 (`PagingSource`, `collectAsLazyPagingItems`) |
+| Image loading | Coil (`SubcomposeAsyncImage`) |
 | HTML parsing | Jsoup |
 | Logging | Timber (debug builds only) |
+
+### Key build configuration notes
+
+- **Kotlin 2.0.21** — Compose Compiler is now a Kotlin plugin (`org.jetbrains.kotlin.plugin.compose`). There is no `composeOptions` block in `app/build.gradle.kts`; do not add one.
+- **compileSdk / targetSdk = 35**, minSdk = 24.
+- **Release builds** have `isMinifyEnabled = true` and `isShrinkResources = true`. R8 rules live in `app/proguard-rules.pro`. When adding new libraries, verify their consumer rules cover reflection/serialization needs before shipping release.
