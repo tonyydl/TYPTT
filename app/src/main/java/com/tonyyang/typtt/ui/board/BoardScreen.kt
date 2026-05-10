@@ -9,13 +9,11 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.pulltorefresh.PullToRefreshContainer
-import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
@@ -37,25 +35,14 @@ fun BoardScreen(
     }
 
     val articleItems = viewModel.articles.collectAsLazyPagingItems()
-    val pullToRefreshState = rememberPullToRefreshState()
     val isRefreshing = articleItems.loadState.refresh is LoadState.Loading
 
-    LaunchedEffect(isRefreshing) {
-        if (isRefreshing) pullToRefreshState.startRefresh()
-        else pullToRefreshState.endRefresh()
-    }
-
-    LaunchedEffect(pullToRefreshState.isRefreshing) {
-        if (pullToRefreshState.isRefreshing && !isRefreshing) {
-            articleItems.refresh()
-        }
-    }
-
-    Box(
+    PullToRefreshBox(
+        isRefreshing = isRefreshing,
+        onRefresh = { articleItems.refresh() },
         modifier = Modifier
             .fillMaxSize()
             .background(Background)
-            .nestedScroll(pullToRefreshState.nestedScrollConnection)
     ) {
         LazyColumn(modifier = Modifier.fillMaxSize()) {
             items(
@@ -81,12 +68,5 @@ fun BoardScreen(
                 }
             }
         }
-
-        PullToRefreshContainer(
-            state = pullToRefreshState,
-            modifier = Modifier.align(Alignment.TopCenter),
-            containerColor = Surface,
-            contentColor = Primary
-        )
     }
 }
